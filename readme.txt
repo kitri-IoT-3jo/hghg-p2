@@ -8,3 +8,6 @@
 **2019/09/26
 1. login 수정
 	- 전역변수 -> session 사용(express-session 설치(npm))
+
+**2019/09/26
+1. git test
