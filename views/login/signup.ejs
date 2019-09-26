@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HgHg Sign up</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<style type="text/css">
+		
+
+		div.main{
+	border-radius: 5px;
+	background-color: #F7D358;
+	padding: 50px;
+	margin: auto;
+	width : 80%;
+	margin-top: 20px;
+	overflow: hidden;
+	}
+		
+	h1 {
+		color : #FACC2E;
+		text-align : center;
+	}
+
+	input[type=text], input[type=password], select{
+	border-radius: 5px;
+	padding : 10px;
+	width: 100%;
+	border: 1px solid #000000;
+	margin: 10px 0;
+	box-sizing: border-box;
+}
+
+input[name^=email], select[name^=email]{
+	border-radius: 5px;
+	padding : 10px;
+	width: 30%;
+	border: 1px solid #000000;
+	margin: 10px 0px 10px 0px;
+	box-sizing: border-box;
+	float: left;
+}
+
+span.email{
+	width: 5%;
+	height: 15px;
+	margin: 11px 0;
+	padding: 10px 0;
+	text-align: center;
+	line-height: 50%;
+	float: left;
+}
+input[name^=tel], select[name^=tel]{
+	border-radius: 5px;
+	padding : 10px;
+	width: 20%;
+	border: 1px solid #000000;
+	margin: 10px 0px 10px 0px;
+	box-sizing: border-box;
+	float: left;
+}
+span.phone{
+	width: 5%;
+	height: 15px;
+	margin: 11px 0;
+	padding: 10px 0;
+	text-align: center;
+	line-height: 50%;
+	float: left;
+}
+
+div.gender {
+
+	width : 30%;
+	font-size : 20px;
+	margin-top: 80px;
+}
+
+div.introduce {
+	font-weight: bold;
+	width : 30%;
+	margin-top: 10px;
+
+}
+
+div.buttons {
+	float: right;
+	width : 30%;
+	font-size : 20px;
+	margin-top: 50px;
+}
+
+</style>
+
+
+</head>
+<body>
+		<h1><a href="login.html">함께한끼와 같이 함께하기</a></h1><br>
+	<div class="main">
+		<form action="">
+			<label for="userid">아이디</label>
+			<input type="text" name="userid" id="userid"
+					placeholder="ID"> 
+			<button type="button" class="btn btn-secondary">중복검사</button><br>
+			<label for="userpwd">비밀번호</label>
+			<input type="password" name="userpwd" id="userpwd"
+					placeholder="Password"> <br>
+			<label for="checkpwd">비밀번호 확인</label>
+			<input type="password" name="checkpwd" id="checkpwd"
+					placeholder="Re-enter the password"><br>
+			<label for="nickname">닉네임</label>
+			<input type="text" name="nickname" id="nickname"
+					placeholder="Nickname"> <br>
+			
+			<label for="email">이메일</label>
+			<div class="email">
+				<input type="text" name="emailid" id="emailid"
+						placeholder="이메일">
+				<span class="email"> @ </span>
+				<select name="emaildomain" id="emaildomain">
+					<option value="naver.com">naver.com</option>
+					<option value="daum.net">daum.net</option>
+					<option value="gmail.com">gmail.com</option>
+					<option value="self" selected="selected">직접입력</option>
+				</select>
+				<span class="email"> </span>
+				<input type="text" name="emailself" id="emailself"
+						placeholder="직접입력">
+			<button type="button" class="btn btn-secondary">인증하기</button>
+			</div><br>
+			<hr>
+			<label for="username">이름</label>
+			<input type="text" name="username" id="username"
+					placeholder="Name"> <br>
+			<label for="phone">생년월일</label>
+			<div class="phone">
+				<select name="tel1" id="tel1">
+					<option value="1990">1990</option>
+					<option value="1991">1991</option>
+					<option value="1992">1992</option>
+				</select>
+				<span class="phone">년</span>
+				<select name="tel2" id="tel2">
+					<option value="1990">1990</option>
+					<option value="1991">1991</option>
+					<option value="1992">1992</option>
+				</select>
+				<span class="phone">월</span>
+				<select name="tel1" id="tel1">
+					<option value="1990">1990</option>
+					<option value="1991">1991</option>
+					<option value="1992">1992</option>
+				</select>
+				<span class="phone">일</span>
+			</div>
+			<div class="gender">
+				<label for="gender" class="gender"></label>
+				<span class="gender">성별</span>
+            	<label> <input type="radio" id="gender" name="gender">      남</label>
+                <label> <input type="radio" id="gender" name="gender">      여</label>
+			</div>
+			<div class="introduce">
+			<span>자기소개</span>
+			<textarea cols="100" rows="5"></textarea>
+			</div>
+
+
+			<div class="buttons">
+			<button type="button" class="btn btn-success">생성하기</button>
+			<button type="reset" class="btn btn-link">다시만들기</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

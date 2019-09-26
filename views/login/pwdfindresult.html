@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PassWord find Result</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	
+	<style type="text/css">
+		
+	div.divmain{
+	border-radius: 5px;
+	background-color: #F7D358;
+	padding: 20px;
+	width: 500px;
+	margin: auto;
+	margin-top: 150px;
+	overflow: hidden;
+	}
+
+	div.buttons {
+		margin-top: 50px;
+		float : right;
+	}
+
+	h1 {
+	text-align: center;
+	color : #F7D358;
+}
+
+	</style>
+
+</head>
+<body>
+	<h1><a href="login.html">함께한끼와 함께하기</a></h1>
+	<div class="divmain">
+	<p><h2>비밀번호 찾기 결과</h2></p>
+
+	<p>입력하신 이메일주소로 인증메일을 보냈습니다.</p>
+
+			<label for="userid">인증번호</label>
+			<input type="text" name="userid" id="userid" placeholder="인증번호입력">
+			<input type="button" name="check" value="확인"> <input type="button" name="check" value="재전송"><br><br>
+
+			<p>인증번호가 일치합니다/ 인증번호가 일치하지 않습니다.<br><br></p>
+
+			<label >새로운 비밀번호를 입력해주세요</label><br>
+
+			<label for="userpwd">비밀번호</label>
+			<input type="password" name="userpwd" id="userpwd"
+					placeholder="Password"><br>
+			<label for="checkpwd">비밀번호 확인</label>
+			<input type="password" name="checkpwd" id="checkpwd"
+					placeholder="Re-enter the password">
+
+
+
+			<div class="buttons">
+			<form>
+			<button type="submit" class="btn btn-success" formaction="login.html">로그인화면으로 이동</button>
+			<button type="submit" class="btn btn-link" formaction="find.html" value="find.html">메인홈페이지로 이동</button>
+			</form>
+			</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+input[type='submit']{
+	background-color: #ffd191;
+	color: white;
+	font-size: 0.8em;
+	font-weight: bold;
+}

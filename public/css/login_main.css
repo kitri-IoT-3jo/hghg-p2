@@ -1,0 +1,47 @@
+div.maindiv {
+    border-radius: 5px;
+    background-color: #ffd191;
+    padding: 50px;
+    width: 500px;
+    margin: auto;
+    margin-top: 150px;
+    overflow: hidden;
+}
+.container{
+    overflow: hidden;
+    margin-bottom: 10px;
+    align-content: center;
+}
+.logo{
+    width: 100%;
+    margin-bottom: 30px;
+}
+.logo:hover{
+    cursor: pointer;
+}
+input.login{
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 0;
+    float: float;
+    width: 100%;
+    height: 40px;
+}
+input[type='submit']{
+    background-color: #f4a161;
+}
+input[type='submit']:hover{
+    background-color: #f49151;
+    font-weight: bold;
+}
+.bottom{
+    float: right;
+    margin-right: 5px;
+    font-size: 0.8em;
+    color: #909090;
+}
+a:hover{
+    color: black;
+    text-decoration: none;
+}
