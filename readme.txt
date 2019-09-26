@@ -10,5 +10,7 @@
 	- 전역변수 -> session 사용(express-session 설치(npm))
 2. 안녕?
 
+안녕못한상태
+
 **2019/09/26
 1. git test
