@@ -14,6 +14,10 @@ app.use(session({
 	saveUninitialized: true
 }));
 
+app.listen(3000, ()=>{
+	console.log('3000 port opened successfully!');
+});
+
 // Index page. Get for initial / Post for page after logined.
 app.get('/', (req, res)=>{
 	var sess = req.session;
@@ -29,6 +33,7 @@ app.post('/login', (req, res)=>{
 	sess.uid = req.body.userid;
 	res.redirect('/');
 });
+
 app.get('/logout', (req, res)=>{
 	var sess = req.session;
 	if(sess.uid){
@@ -43,12 +48,15 @@ app.get('/logout', (req, res)=>{
 		res.redirect('/');
 });
 
+app.get('/login/signup', (req, res)=>{
+	res.render('login/signup');
+});
+app.get('/login/find', (req, res)=>{
+	res.render('login/find.ejs');
+});
+
 // Board set
 app.get('/board', (req, res)=>{
 	var sess = req.session;
 	res.render('community/board', {user:sess.uid});
-});
-
-app.listen(3000, ()=>{
-	console.log('3000 port opened successfully!');
 });
