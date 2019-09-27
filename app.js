@@ -65,13 +65,9 @@ app.get('/logout', (req, res)=>{
 });
 app.get('/signup', (req, res)=>{
 	var sess = req.session;
-	res.render('login/signup', {user:sess.uid});
+	res.render('login/signup', {user: sess.uid});
 });
-
-app.get('/login/signup', (req, res)=>{
-	res.render('login/signup');
-});
-app.get('/login/find', (req, res)=>{
+app.get('/find', (req, res)=>{
 	res.render('login/find.ejs');
 });
 
