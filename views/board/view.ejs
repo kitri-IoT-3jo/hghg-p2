@@ -13,9 +13,9 @@
     }
     </script>
     <style type="text/css">
-      .clear-fix{
+    .clear-fix {
         height: 100px;
-      }
+    }
     </style>
 </head>
 
@@ -40,26 +40,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%= article.user_nickname%>(<%= article.id%>)</td>
-                        <td><%= article.hit%></td>
+                        <td>
+                            <%= article.user_nickname%>(
+                            <%= article.id%>)</td>
+                        <td>
+                            <%= article.hit%>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
                             <% if(id == article.id){-%>
-                                <div class="text-right">
-                                    <a href="/modify/<%= article.board_id %>">수정</a>
-                                    |
-                                    <a href="/board/<%= article.board_id %>/delete">삭제</a>
-                                </div>
+                            <div class="text-right">
+                                <a href="/modify/<%= article.board_id %>">수정</a>
+                                |
+                                <a href="/board/<%= article.board_id %>/delete">삭제</a>
+                            </div>
                             <% }-%>
                             <%- article.contents%>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-        <div class="text-center">
-            <button type="button" class="btn btn-warning" id="board">목록</button>
         </div>
     </div>
 </body>

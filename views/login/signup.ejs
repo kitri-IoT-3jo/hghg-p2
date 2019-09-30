@@ -6,125 +6,6 @@
     <title>HgHg Sign up</title>
     <%- include('../includes/_head')%>
     <%- include('../includes/board')%>
-    <style type="text/css">
-    div.main {
-        border-radius: 5px;
-        background-color: #ffd191;
-        padding: 50px;
-        margin: auto;
-        width: 450px;
-        margin-top: 100px;
-        overflow: hidden;
-        font-size: 0.9em; 
-    }
-
-    h1 {
-        color: #FACC2E;
-        text-align: center;
-    }
-
-    input[type=text],
-    input[type=password],
-    select {
-        border-radius: 5px;
-        padding: 10px;
-        width: 100%;
-        border: 1px solid #000000;
-        margin: 10px 0;
-        box-sizing: border-box;
-    }
-
-    input[name^=email],
-    select[name^=email] {
-        border-radius: 5px;
-        padding: 10px;
-        width: 30%;
-        border: 1px solid #000000;
-        margin: 10px 0px 10px 0px;
-        box-sizing: border-box;
-        float: left;
-    }
-
-    span.email {
-        width: 5%;
-        height: 15px;
-        margin: 11px 0;
-        padding: 10px 0;
-        text-align: center;
-        line-height: 50%;
-        float: left;
-    }
-
-    input[name^=tel],
-    select[name^=tel] {
-        border-radius: 5px;
-        padding: 10px;
-        width: 20%;
-        border: 1px solid #000000;
-        margin: 10px 0px 10px 0px;
-        box-sizing: border-box;
-        float: left;
-    }
-
-    span.phone {
-        width: 5%;
-        height: 15px;
-        margin: 11px 0;
-        padding: 10px 0;
-        text-align: center;
-        line-height: 50%;
-        float: left;
-    }
-
-    div.gender {
-
-        width: 30%;
-        font-size: 20px;
-        margin-top: 80px;
-    }
-
-    div.introduce {
-        font-weight: bold;
-        width: 30%;
-        margin-top: 10px;
-
-    }
-
-    div.buttons {
-        float: right;
-        width : 25%; 
-        font-size: 20px;
-        margin-top: 10px;
-    } 
-    input[type=submit] {
-        width: 100%;
-        border: 0;
-        padding: 10px;
-        background-color: #f4a161;
-        margin: 2px 0;
-        font-size: 0.9em;
-    }
-
-    /*inputs for submit and reset*/
-    input[type=submit]:hover {
-        background-color: #f49151;
-        font-weight: bold;
-    }
-
-    input[type=reset] {
-        width: 100%;
-        border: 0;
-        padding: 10px;
-        background-color: #c0c0c0;
-        margin: 2px 0;
-        font-size: 0.9em;
-    }
-
-    input[type=reset]:hover {
-        background-color: #a0a0a0;
-        font-weight: bold;
-    }
-    </style>
 </head>
 
 <body>
@@ -157,7 +38,7 @@
             <label for="username">이름</label>
             <input type="text" name="username" id="username" placeholder="이름"> <br>
             <label for="phone">생년월일</label>
-            <div class="phone">
+            <div class="date">
                 <select name="tel1" id="tel1">
                     <% for(var year = 1900 ; year<=2019;year++) { %>
                     <option value="test">
@@ -165,7 +46,7 @@
                     </option>
                     <%}%>
                 </select>
-                <span class="date">년</span>
+                <span class="date">&nbsp년</span>
                 <select name="tel2" id="tel2">
                     <% for(var month = 1 ; month<=12;month++) { %>
                     <option value="test">
@@ -173,7 +54,7 @@
                     </option>
                     <%}%>
                 </select>
-                <span class="date">월</span>
+                <span class="date">&nbsp월</span>
                 <select name="tel1" id="tel1">
                     <% for(var day = 1 ; day<=31;day++) { %>
                     <option value="test">
@@ -181,16 +62,7 @@
                     </option>
                     <%}%>
                 </select>
-                <span class="phone">일</span>
-            </div>
-            <div class="gender">
-                <label for="gender" class="gender"></label>
-                <span class="gender">성별</span>
-                <label> <input type="radio" id="gender" name="gender"> 남</label>
-                <label> <input type="radio" id="gender" name="gender"> 여</label>
-            </div>
-            <div class="buttons">
-                <button type="button" class="btn btn-success">생성하기</button>
+                <span class="date">&nbsp일</span>
             </div>
             <input type="submit" name="submit" value="회원가입">
             <input type="reset" name="reset" value="초기화">
