@@ -105,7 +105,7 @@ app.get('/board/write', (req, res)=>{
 		res.render('board/write',{user:sess.uid});
 });
 app.post('/board/write', (req, res)=>{
-	let n = req.session;
+	let n = req.session.uid;
 	let s = req.body.subject;
 	let str = req.body.contents;
 	str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
@@ -139,19 +139,18 @@ app.get('/board/:num', (req, res)=>{
 		where board_id = ?
 	`;
 
-	conn.query(vqstr, [num],(err, results, fields)=>{
+	conn.query(inc_hit, [num],(err, results, fields)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
-		conn.query(inc_hit, [num], (err, results, fields)=>{
+		conn.query(vqstr, [num], (err, result, field)=>{
 			if(err){
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			}
-		})
-		res.render('board/view', {article:results[0],user:sess.uid});
-		//conn.release();
+			res.render('board/view', {article:result[0],user:sess.uid});
+		});
 	});
 });
 
@@ -174,6 +173,7 @@ app.get('/board/:num/delete', (req, res) => {
 
 app.get('/modify/:num', (req, res) => {
 	let num = req.params.num;
+	let sess = req.session;
 	let ex_contents = `
 		select board_id, user_id, subject, contents, hit,
 		date_format(regdate, '%Y.%m.%d. %H:%i') as date
@@ -187,7 +187,7 @@ app.get('/modify/:num', (req, res) => {
 			console.log(err);
 			res.status(500).send('Internal Server Error!');
 		}
-		res.render('board/modify', {article: results[0]});
+		res.render('board/modify', {article: results[0],user:sess.uid});
 	});
 });
 
