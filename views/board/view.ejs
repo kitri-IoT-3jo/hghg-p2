@@ -15,6 +15,12 @@
             location.href = '/board';
         }
     }
+    function mod() {
+        location.href = '/modify/<%= article.board_id %>';
+    }
+    function del() {
+        location.href = '/board/<%= article.board_id %>/delete';
+    }
     </script>
 </head>
 
@@ -49,6 +55,8 @@
             </table>
         </div>
         <div class="text-right">
+            <button type="button" class="btn btn-danger" onclick="del();">삭제</button>
+            <button type="button" class="btn" onclick="mod();">수정</button>
             <button type="button" class="btn btn-warning" id="board">목록</button>
         </div>
     </div>

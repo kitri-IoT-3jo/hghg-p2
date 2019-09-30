@@ -96,14 +96,14 @@ app.get('/board', (req, res)=>{
 	});
 	//conn.end();
 });
-app.get('/write', (req, res)=>{
+app.get('/board/write', (req, res)=>{
 	let sess = req.session;
 	if(sess.uid == undefined)
 		res.redirect('/login');
 	else
 		res.render('board/write',{user:sess.uid});
 });
-app.post('/post', (req, res)=>{
+app.post('/board/write', (req, res)=>{
 	let n = req.session;
 	let s = req.body.subject;
 	let str = req.body.contents;
@@ -113,7 +113,7 @@ app.post('/post', (req, res)=>{
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
 	`;
-	conn.query(data, [n,s,c], (err, results, fields)=>{
+	conn.query(data, [n,s,c], (err, results)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send('Internal Server Error');
@@ -151,6 +151,55 @@ app.get('/board/:num', (req, res)=>{
 	});
 });
 
-app.listen(3000, ()=>{
-	console.log('3000 port opened successfully!');
+app.get('/board/:num/delete', (req, res) => {
+	let num = req.params.num;
+	let board_del = `
+		delete from board
+		where board_id = ?
+	`;
+
+	conn.query(board_del, [num], (err, results, fields) => {
+		if(err)
+		{
+			console.log(err);
+			res.status(500).send('Internal Server Error!');
+		}
+		res.redirect('/board');
+	});
+});
+
+app.get('/modify/:num', (req, res) => {
+	let num = req.params.num;
+	let ex_contents = `
+		select board_id, user_id, subject, contents, hit,
+		date_format(regdate, '%Y.%m.%d. %H:%i') as date
+		from board
+		where board_id = ?
+	`;
+
+	conn.query(ex_contents, [num], (err, results, fields) => {
+		if(err)
+		{
+			console.log(err);
+			res.status(500).send('Internal Server Error!');
+		}
+		res.render('board/modify', {article: results[0]});
+	});
+});
+
+app.post('/modify/:num', (req, res) => {
+	let values = [req.body.name, req.body.subject, req.body.contents, req.params.num];
+	let board_update = `
+		update board
+		set name = ?, subject = ?, contents = ?
+		where num = ?`;
+
+	conn.query(board_update, values, (err, result) => {
+		if(err) {
+			console.log(err);
+			res.status(500).send('Internal Server Error!');
+		}
+		//res.render('board/write');
+		res.redirect('/board/'+ req.params.num);
+	});
 });
