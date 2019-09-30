@@ -34,7 +34,8 @@
                 <tbody>
                     <tr>
                         <td>
-                            <strong><%= article.subject%></strong>
+                            <strong>
+                                <%= article.subject%></strong>
                         </td>
                         <td>
                             <%= article.date%>
@@ -65,6 +66,17 @@
         </div>
         <div class="text-center">
             <button type="button" class="btn btn-warning" id="board">목록</button>
+        </div>
+        <!--댓글 부분-->
+        <!--ajax로 그때그때 댓글 불러올 수 있고록 함-->
+        <div>
+            <h6>Comments (0)</h6>
+            <div class="input-group mb-3 col-md-20" >
+                <textarea class="form-control" placeholder="타인에게 악의적인 댓글은 삼가주세요!'ㅅ'" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">입력</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
