@@ -37,17 +37,35 @@ app.listen(3000, ()=>{
 // Index page. Get for initial / Post for page after logined.
 app.get('/', (req, res)=>{
 	let sess = req.session;
-	res.render('index', {user:sess.uid});
+	res.render('index', {user:sess.nick});
 });
 
 // Login set
 app.get('/login', (req, res)=>{
-	res.render('login/login_main', {title:'한끼함께 LOGIN'});
+	res.render('login/login_main', {isalert: false});
 });
 app.post('/login', (req, res)=>{
-	let sess = req.session;
-	sess.uid = req.body.userid;
-	res.redirect('/');
+	let uid = req.body.userid;
+	let q = `
+		select user_pw, user_nickname
+		from hghg_user
+		where user_id = ?
+	`;
+	conn.query(q, [uid],(err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		let pw = req.body.userpw;
+		if(pw == results[0].user_pw){
+			let sess = req.session;
+			sess.uid = uid;
+			sess.nick = results[0].user_nickname;
+			res.redirect('/');
+		}
+		else
+			res.render('login/login_main', {isalert:true});
+	});
 });
 
 app.get('/logout', (req, res)=>{
@@ -65,7 +83,7 @@ app.get('/logout', (req, res)=>{
 });
 app.get('/signup', (req, res)=>{
 	let sess = req.session;
-	res.render('login/signup', {user:sess.uid});
+	res.render('login/signup', {user:sess.nick});
 });
 app.get('/find', (req, res)=>{
 	res.render('login/find.ejs');
@@ -92,7 +110,7 @@ app.get('/board', (req, res)=>{
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
-		res.render('board/board_main', {query:results, user:sess.uid});
+		res.render('board/board_main', {query:results, user:sess.nick});
 		//conn.release();
 	});
 	//conn.end();
@@ -102,7 +120,7 @@ app.get('/board/write', (req, res)=>{
 	if(sess.uid == undefined)
 		res.redirect('/login');
 	else
-		res.render('board/write',{user:sess.uid});
+		res.render('board/write',{user:sess.nick});
 });
 app.post('/board/write', (req, res)=>{
 	let n = req.session.uid;
@@ -149,7 +167,7 @@ app.get('/board/:num', (req, res)=>{
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			}
-			res.render('board/view', {article:result[0],user:sess.uid});
+			res.render('board/view', {article:result[0],user:sess.nick});
 		});
 	});
 });
@@ -187,7 +205,7 @@ app.get('/modify/:num', (req, res) => {
 			console.log(err);
 			res.status(500).send('Internal Server Error!');
 		}
-		res.render('board/modify', {article: results[0],user:sess.uid});
+		res.render('board/modify', {article: results[0],user:sess.nick});
 	});
 });
 
