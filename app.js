@@ -30,6 +30,10 @@ conn.connect((err)=>{
 		console.log('DB connected!');
 });
 
+app.listen(3000, ()=>{
+	console.log('3000 port opened successfully!');
+});
+
 // Index page. Get for initial / Post for page after logined.
 app.get('/', (req, res)=>{
 	let sess = req.session;
@@ -45,6 +49,7 @@ app.post('/login', (req, res)=>{
 	sess.uid = req.body.userid;
 	res.redirect('/');
 });
+
 app.get('/logout', (req, res)=>{
 	let sess = req.session;
 	if(sess.uid){
@@ -61,6 +66,9 @@ app.get('/logout', (req, res)=>{
 app.get('/signup', (req, res)=>{
 	let sess = req.session;
 	res.render('login/signup', {user:sess.uid});
+});
+app.get('/find', (req, res)=>{
+	res.render('login/find.ejs');
 });
 
 // Board set
