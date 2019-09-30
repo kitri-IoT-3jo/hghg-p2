@@ -43,27 +43,30 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login/login_main', { isalert: false });
 });
-app.post('/login', (req, res) => {
-    let uid = req.body.userid;
-    let q = `
-		select user_pw, user_nickname
+
+app.post('/login', (req, res)=>{
+	let uid = req.body.userid;
+	let q = `
+		select count(user_id) as cnt, user_pw, user_nickname
 		from hghg_user
 		where user_id = ?
 	`;
-    conn.query(q, [uid], (err, results, fields) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Internal Server Error');
-        }
-        let pw = req.body.userpw;
-        if (pw == results[0].user_pw) {
-            let sess = req.session;
-            sess.uid = uid;
-            sess.nick = results[0].user_nickname;
-            res.redirect('/');
-        } else
-            res.render('login/login_main', { isalert: true });
-    });
+	conn.query(q, [uid],(err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		let pw = req.body.userpw;
+
+		if(results[0].cnt == 1 && pw == results[0].user_pw){
+			let sess = req.session;
+			sess.uid = uid;
+			sess.nick = results[0].user_nickname;
+			res.redirect('/');
+		}
+		else
+			res.render('login/login_main', {isalert:true});
+	});
 });
 
 app.get('/logout', (req, res) => {
@@ -101,32 +104,32 @@ app.get('/board', (req, res) => {
 		where b.user_id = u.user_id
 		order by board_id desc
 	`;
-    let sess = req.session;
-    conn.query(qstr, (err, results, fields) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Internal Server Error');
-        }
-        res.render('board/board_main', { query: results, user: sess.nick });
-        //conn.release();
-    });
-    //conn.end();
+	let sess = req.session;
+	conn.query(qstr, (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		res.render('board/board_main', {query:results, user:sess.nick});
+		//conn.release();
+	});
+	//conn.end();
 });
-app.get('/board/write', (req, res) => {
-    let sess = req.session;
-    if (sess.uid == undefined)
-        res.redirect('/login');
-    else
-        res.render('board/write', { user: sess.nick });
+app.get('/board/write', (req, res)=>{
+	let sess = req.session;
+	if(sess.uid == undefined)
+		res.redirect('/login');
+	else
+		res.render('board/write',{user:sess.nick});
 });
-app.post('/board/write', (req, res) => {
-    let n = req.session.uid;
-    let s = req.body.subject;
-    let str = req.body.contents;
-    str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
-    let c = str;
-    console.log(n, s, c);;
-    let data = `
+app.post('/board/write', (req, res)=>{
+	let n = req.session.uid;
+	let s = req.body.subject;
+	let str = req.body.contents;
+	let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+	c = c.replace(/(\s)/g, '&nbsp;');
+	console.log(n, s, c);;
+	let data = `
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
 	`;
@@ -194,15 +197,14 @@ app.get('/modify/:num', (req, res) => {
 		from board
 		where board_id = ?
 	`;
-
-    conn.query(ex_contents, [num], (err, results, fields) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Internal Server Error!');
-        }
-        console.log(results[0]);
-        res.render('board/modify', { article: results[0], user: sess.nick });
-    });
+	conn.query(ex_contents, [num], (err, results, fields) => {
+		if(err)
+		{
+			console.log(err);
+			res.status(500).send('Internal Server Error!');
+		}
+		res.render('board/modify', {article: results[0], user:sess.nick});
+	});
 });
 
 app.post('/modify/:num', (req, res) => {
