@@ -167,7 +167,7 @@ app.get('/board/:num', (req, res)=>{
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			}
-			res.render('board/view', {article:result[0],user:sess.nick});
+			res.render('board/view', {article:result[0],user:sess.nick, id:sess.uid});
 		});
 	});
 });
