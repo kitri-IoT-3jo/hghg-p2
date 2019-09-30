@@ -126,9 +126,10 @@ app.post('/board/write', (req, res)=>{
 	let n = req.session.uid;
 	let s = req.body.subject;
 	let str = req.body.contents;
+    console.log(str);
 	let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 	c = c.replace(/(\s)/g, '&nbsp;');
-	console.log(n, s, c);;
+	console.log(n, s, c);
 	let data = `
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
