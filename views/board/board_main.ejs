@@ -1,53 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>노드 게시판</title>
-  <%- include('../includes/head')%>
-  <script type="text/javascript">
-    window.onload = function(){
-      document.getElementById('write').onclick = function () {
-        location.href = '/write';
-      }
+    <%- include('../includes/_head')-%>
+    <%- include('../includes/head')%>
+    <title>노드 게시판</title>
+    <script type="text/javascript">
+    window.onload = function() {
+        document.getElementById('write').onclick = function() {
+            location.href = '/write';
+        }
     }
-  </script>
+    </script>
+    <style type="text/css">
+      .clear-fix{
+        height: 100px;
+      }
+    </style>
 </head>
+
 <body>
-<div class="container">
-  <h3>전체글보기</h3><br>
-  <table class="table table-hover">
-    <colgroup>
-      <col width="80px">
-      <col width="*">
-      <col width="120px">
-      <col width="80px">
-      <col width="80px">
-    </colgroup>
-    <thead>
-      <tr>
-        <th>글번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>조회수</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% query.forEach((q, key)=>{-%>
-      <tr>
-        <td><%= q.BOARD_id%></td>
-        <td>
-          <a href="/board/<%= q.BOARD_id-%>"><%= q.subject%></a>
-        </td>
-        <td><%= q.user_id%></td>
-        <td><%= q.date%></td>
-        <td><%= q.hit%></td>
-      </tr>
-      <% })-%>
-    </tbody>
-  </table>
-  <div class="text-right">
-    <button type="button" class="btn btn-warning" id="write">글쓰기</button>
-  </div>
-</div>
+    <!-- Navigation -->
+    <%- include('../navbar/nav_main', {user:user})%>
+    <div class="clear-fix"></div>
+    <div class="container">
+        <h3>전체글보기</h3><br>
+        <table class="table table-hover">
+            <colgroup>
+                <col width="80px">
+                <col width="*">
+                <col width="120px">
+                <col width="80px">
+                <col width="80px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% query.forEach((q, key)=>{-%>
+                <tr>
+                    <td>
+                        <%= q.BOARD_id%>
+                    </td>
+                    <td>
+                        <a href="/board/<%= q.BOARD_id-%>">
+                            <%= q.subject%></a>
+                    </td>
+                    <td>
+                        <%= q.user_id%>
+                    </td>
+                    <td>
+                        <%= q.date%>
+                    </td>
+                    <td>
+                        <%= q.hit%>
+                    </td>
+                </tr>
+                <% })-%>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <button type="button" class="btn btn-warning" id="write">글쓰기</button>
+        </div>
+    </div>
 </body>
+
 </html>
