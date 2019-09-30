@@ -11,12 +11,6 @@
             location.href = '/board';
         }
     }
-    function mod() {
-        location.href = '/modify/<%= article.board_id %>';
-    }
-    function del() {
-        location.href = '/board/<%= article.board_id %>/delete';
-    }
     </script>
     <style type="text/css">
       .clear-fix{
@@ -51,6 +45,13 @@
                     </tr>
                     <tr>
                         <td colspan="2">
+                            <% if(user == article.id){-%>
+                                <div class="text-right">
+                                    <a href="/modify/<%= article.board_id %>">수정</a>
+                                    |
+                                    <a href="/board/<%= article.board_id %>/delete">삭제</a>
+                                </div>
+                            <% }-%>
                             <%- article.contents%>
                         </td>
                     </tr>
@@ -59,8 +60,6 @@
         </div>
         <div class="text-center">
             <button type="button" class="btn btn-warning" id="board">목록</button>
-            <button type="button" class="btn" onclick="mod();">수정</button>
-            <button type="button" class="btn btn-danger" onclick="del();">삭제</button>
         </div>
     </div>
 </body>

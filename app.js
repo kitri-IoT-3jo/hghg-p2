@@ -192,11 +192,11 @@ app.get('/modify/:num', (req, res) => {
 });
 
 app.post('/modify/:num', (req, res) => {
-	let values = [req.body.name, req.body.subject, req.body.contents, req.params.num];
+	let values = [req.body.subject, req.body.contents, req.params.num];
 	let board_update = `
 		update board
-		set name = ?, subject = ?, contents = ?
-		where num = ?`;
+		set subject = ?, contents = ?
+		where board_id = ?`;
 
 	conn.query(board_update, values, (err, result) => {
 		if(err) {
