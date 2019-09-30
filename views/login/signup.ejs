@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>HgHg Sign up</title>
-    <%- include('../includes/getit')%>
+    <%- include('../includes/_head')%>
     <style type="text/css">
     div.main {
         border-radius: 5px;
         background-color: #ffd191;
         padding: 50px;
         margin: auto;
-        width: 80%;
-        margin-top: 20px;
+        width: 50%;
+        margin-top: 100px;
         overflow: hidden;
     }
 
@@ -90,9 +90,9 @@
 
     div.buttons {
         float: right;
-        width: 30%;
+        width: 15%;
         font-size: 20px;
-        margin-top: 50px;
+        margin-top: 10px;
     }
     </style>
 </head>
@@ -130,21 +130,21 @@
             <label for="phone">생년월일</label>
             <div class="phone">
                 <select name="tel1" id="tel1">
-                    <option value="1990">1990</option>
-                    <option value="1991">1991</option>
-                    <option value="1992">1992</option>
+                    <% for(var year = 1900 ; year<=2019;year++) { %>
+                    <option value="test"><%=year%></option>
+                    <%}%>
                 </select>
                 <span class="phone">년</span>
                 <select name="tel2" id="tel2">
-                    <option value="1990">1990</option>
-                    <option value="1991">1991</option>
-                    <option value="1992">1992</option>
+                    <% for(var month = 1 ; month<=12;month++) { %>
+                    <option value="test"><%=month%></option>
+                    <%}%>
                 </select>
                 <span class="phone">월</span>
                 <select name="tel1" id="tel1">
-                    <option value="1990">1990</option>
-                    <option value="1991">1991</option>
-                    <option value="1992">1992</option>
+                    <% for(var day = 1 ; day<=31;day++) { %>
+                    <option value="test"><%=day%></option>
+                    <%}%>
                 </select>
                 <span class="phone">일</span>
             </div>
@@ -153,10 +153,6 @@
                 <span class="gender">성별</span>
                 <label> <input type="radio" id="gender" name="gender"> 남</label>
                 <label> <input type="radio" id="gender" name="gender"> 여</label>
-            </div>
-            <div class="introduce">
-                <span>자기소개</span>
-                <textarea cols="100" rows="5"></textarea>
             </div>
             <div class="buttons">
                 <button type="button" class="btn btn-success">생성하기</button>
