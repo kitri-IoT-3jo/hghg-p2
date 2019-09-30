@@ -128,7 +128,7 @@ app.post('/board/write', (req, res)=>{
 	let str = req.body.contents;
 	str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
 	let c = str;
-
+	console.log(n, s, c);;
 	let data = `
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
@@ -205,7 +205,8 @@ app.get('/modify/:num', (req, res) => {
 			console.log(err);
 			res.status(500).send('Internal Server Error!');
 		}
-		res.render('board/modify', {article: results[0],user:sess.nick});
+		console.log(results[0]);
+		res.render('board/modify', {article: results[0], user:sess.nick});
 	});
 });
 
