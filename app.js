@@ -78,12 +78,13 @@ app.get('/find', (req, res)=>{
 // });
 app.get('/board', (req, res)=>{
 	let qstr = `
-		select BOARD_id, user_id, subject, contents, hit,
+		select board_id, user_nickname, subject, contents, hit,
 			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
 			date_format(regdate, '%H:%i'),
 			date_format(regdate, '%Y.%m.%d.')) as date
-		from board
-		order by BOARD_id desc
+		from board b, hghg_user u
+		where b.user_id = u.user_id
+		order by board_id desc
 	`;
 	let sess = req.session;
 	conn.query(qstr, (err, results, fields)=>{
@@ -104,11 +105,13 @@ app.get('/write', (req, res)=>{
 		res.render('board/write',{user:sess.uid});
 });
 app.post('/post', (req, res)=>{
-	let n = req.session;
+	let sess = req.session;
+	let n = sess.uid;
 	let s = req.body.subject;
 	let str = req.body.contents;
 	str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
 	let c = str;
+
 	let data = `
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
@@ -123,11 +126,13 @@ app.post('/post', (req, res)=>{
 });
 app.get('/board/:num', (req, res)=>{
 	let num = req.params.num;
+	let sess = req.session;
 	let vqstr = `
-		select board_id, user_id, subject, contents, hit,
+		select board_id, b.user_id as id, user_nickname, subject, contents, hit,
 			date_format(regdate, '%Y.%m.%d. %H:%i') as date
-		from board
-		where board_id = ?
+		from board b, hghg_user u
+		where b.user_id = u.user_id
+		and board_id = ?
 	`;
 	let inc_hit = `
 		update board
@@ -146,11 +151,7 @@ app.get('/board/:num', (req, res)=>{
 				res.status(500).send('Internal Server Error');
 			}
 		})
-		res.render('board/view', {article:results[0]});
+		res.render('board/view', {article:results[0],user:sess.uid});
 		//conn.release();
 	});
-});
-
-app.listen(3000, ()=>{
-	console.log('3000 port opened successfully!');
 });

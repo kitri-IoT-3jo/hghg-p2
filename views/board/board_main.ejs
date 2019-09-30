@@ -3,7 +3,6 @@
 
 <head>
     <%- include('../includes/_head')-%>
-    <%- include('../includes/head')%>
     <title>노드 게시판</title>
     <script type="text/javascript">
     window.onload = function() {
@@ -46,14 +45,14 @@
                 <% query.forEach((q, key)=>{-%>
                 <tr>
                     <td>
-                        <%= q.BOARD_id%>
+                        <%= q.board_id%>
                     </td>
                     <td>
-                        <a href="/board/<%= q.BOARD_id-%>">
+                        <a href="/board/<%= q.board_id-%>">
                             <%= q.subject%></a>
                     </td>
                     <td>
-                        <%= q.user_id%>
+                        <%= q.user_nickname%>
                     </td>
                     <td>
                         <%= q.date%>

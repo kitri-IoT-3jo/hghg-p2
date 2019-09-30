@@ -2,13 +2,8 @@
 <html lang="en">
 
 <head>
+    <%- include('../includes/_head')-%>
     <title>글 보기</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     window.onload = function() {
         document.getElementById('board').onclick = function() {
@@ -16,11 +11,19 @@
         }
     }
     </script>
+    <style type="text/css">
+      .clear-fix{
+        height: 100px;
+      }
+    </style>
 </head>
 
 <body>
+    <!-- Navigation -->
+    <%- include('../navbar/nav_main', {user:user})%>
+    <div class="clear-fix"></div>
     <div class="container">
-        <h6 class="display-4">글 보기</h6><br>
+        <h3>글 보기</h3><br>
         <div class="tabe-responsive">
             <table class="table">
                 <colgroup>
@@ -36,9 +39,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <%= article.name%>
-                        </td>
+                        <td><%= article.user_nickname%>(<%= article.id%>)</td>
+                        <td><%= article.hit%></td>
                     </tr>
                     <tr>
                         <td colspan="2">
