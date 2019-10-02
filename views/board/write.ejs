@@ -5,17 +5,10 @@
     <%- include('../includes/board')-%>
     <%- include('../includes/nav')-%>
     <title>글 작성</title>
-    <script type="text/javascript">
-    window.onload = function() {
-        document.getElementById('back').onclick = function() {
-            location.href = '/board';
-        }
-    }
-    </script>
-        <style type="text/css">
-      .clear-fix{
+    <style type="text/css">
+    .clear-fix {
         height: 100px;
-      }
+    }
     </style>
 </head>
 
@@ -25,17 +18,16 @@
     <div class="clear-fix"></div>
     <div class="container">
         <h3>게시글 작성</h3><br>
-        <form action="/board/write" class="needs-validation" method="post">
+        <form action="/board/write" class="needs-validation" method="post" name="bw">
             <div class="form-group">
                 <input type="text" class="form-control" id="subject" placeholder="제목 입력" name="subject" required>
             </div>
             <div class="form-group">
                 <textarea class="form-control" rows="10" id="contents" placeholder="내용 입력" name="contents"></textarea>
-            </div>
-<% include('../includes/sample.ejs')-%>
-            <div class="text-center">
+            </div><br>
+            <div class="text-right">
                 <button id="submit" type="submit" class="btn btn-warning">작성</button>
-                <button id="back" type="reset" class="btn btn-outline-warning">취소</button>
+                <button onclick="javascript:{location.href = '/board';}" class="btn btn-outline-warning">취소</button>
             </div>
         </form>
     </div>

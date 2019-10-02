@@ -38,6 +38,27 @@ app.get('/', (req, res) => {
     let sess = req.session;
     res.render('index', { user: sess.nick });
 });
+app.post('/', (req, res) => {
+    let new_id = `
+    	insert into hghg_user (user_id, user_pw, user_name, user_nickname, email_id, email_domain)
+		values (?, ?, ?, ?, ?, ?);
+    `;
+    let user_id = req.body.userid;
+    let user_pw = req.body.userpwd;
+    let user_name = req.body.username;
+    let user_nickname = req.body.nickname;
+    let email_id = req.body.emailid;
+    let email_domain = req.body.emaildomain;
+    let data = [user_id, user_pw, user_name, user_nickname, email_id, email_domain];
+    console.log(data);
+    conn.query(new_id, data, (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		res.redirect('/');
+	});
+});
 
 // Login set
 app.get('/login', (req, res) => {
@@ -82,8 +103,22 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
 });
 app.get('/signup', (req, res) => {
-    let sess = req.session;
-    res.render('login/signup', { user: sess.nick });
+	let sess = req.session;
+    let get_id = `
+    	select user_id
+    	from hghg_user
+    `;
+    let ids = new Array();
+    conn.query(get_id, (err, results, fields)=>{
+    	if(err){
+    		console.log(err);
+    		throw err;
+    	}
+    	for(var i = 0; i < results.length; i++)
+    		ids.push(results[i].user_id);
+
+    	res.render('login/signup', { ids: ids, user: sess.nick });
+    });
 });
 app.get('/find', (req, res) => {
     res.render('login/find.ejs');
@@ -126,14 +161,14 @@ app.post('/board/write', (req, res)=>{
 	let n = req.session.uid;
 	let s = req.body.subject;
 	let str = req.body.contents;
-    console.log(str);
 	let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 	c = c.replace(/(\s)/g, '&nbsp;');
-	console.log(n, s, c);
+	
 	let data = `
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
 	`;
+
     conn.query(data, [n, s, c], (err, results) => {
         if (err) {
             console.log(err);

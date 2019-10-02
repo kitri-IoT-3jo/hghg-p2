@@ -1,0 +1,106 @@
+h4,
+ul {
+    margin: 0;
+}
+
+input#create {
+    background: #f4a161;
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    color: white;
+}
+
+div.hghg,
+div.new {
+    background: #ffd191;
+    border-radius: 5px;
+    width: 700px;
+    margin: auto;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+div.new {
+    background: none;
+}
+
+div.leftcards {
+    width: 80%;
+    float: left;
+}
+
+div.rightcards {
+    width: 20%;
+    float: left;
+}
+
+div.hcard {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: none;
+    overflow: hidden;
+}
+
+div.member {
+    overflow: hidden;
+    width: 160px;
+    margin: 5px;
+    float: left;
+}
+
+div.member>* {
+    height: 40px;
+    float: left;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+h4.member_name {
+    height: 20px;
+    margin-top: 10px;
+}
+
+.alarms {
+    height: 21px;
+    float: right;
+    margin-right: 10px;
+}
+
+input[type="button"] {
+    border-radius: 3px;
+    margin: 10px 0px 0px 0px;
+    border: 1px solid white;
+    background: #f9f9f9;
+    width: 70px;
+}
+
+input[type="button"]:hover {
+    background: #ffa161;
+    border: 1px solid #f47131;
+    font-weight: bold;
+}
+
+.chat_img {
+    height: 30px;
+    padding: 20px 0px 0px 35px;
+}
+
+input.tmp {
+    border-radius: 5px;
+    padding: 10px;
+    width: 90%;
+    border: 1px solid #000000;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+input[value='ㅎㄲㅎㄲ!'] {
+    border: 0;
+    background: #f4a161;
+    float: right;
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    color: white;
+}

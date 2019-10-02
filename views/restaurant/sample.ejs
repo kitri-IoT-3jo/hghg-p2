@@ -32,7 +32,7 @@
 			width: 20%;
 			float: left;
 		}
-		div.card {
+		div.hcard {
 			padding: 10px;
 			margin-bottom: 10px;
 			overflow: hidden;
@@ -167,13 +167,13 @@
 
 			//left cards
 			var title = document.createElement('div');
-			title.setAttribute('class', 'card');
+			title.setAttribute('class', 'hcard');
 			var th = document.createElement('h4');
 			th.innerText = text.value;
 			title.appendChild(th);
 
 			var member = document.createElement('div');
-			member.setAttribute('class', 'card');
+			member.setAttribute('class', 'hcard');
 			var host = document.createElement('div');
 			host.setAttribute('class', 'member');
 			var himg = document.createElement('img');
@@ -195,7 +195,7 @@
 
 			//right cards
 			var time = document.createElement('div');
-			time.setAttribute('class', 'card');
+			time.setAttribute('class', 'hcard');
 			var clock = document.createElement('h4');
 			var alarm = document.createElement('img');
 			clock.innerText = date.value;
@@ -206,7 +206,7 @@
 			time.appendChild(alarm);
 
 			var buttons = document.createElement('div');
-			buttons.setAttribute('class', 'card');
+			buttons.setAttribute('class', 'hcard');
 			var list = document.createElement('ul');
 			list.setAttribute('type', 'none');
 			var a = document.createElement('li');
