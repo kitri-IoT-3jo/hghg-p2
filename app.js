@@ -45,28 +45,28 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res)=>{
-	let uid = req.body.userid;
-	let q = `
-		select count(user_id) as cnt, user_pw, user_nickname
-		from hghg_user
-		where user_id = ?
-	`;
-	conn.query(q, [uid],(err, results, fields)=>{
-		if(err){
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		}
-		let pw = req.body.userpw;
+   let uid = req.body.userid;
+   let q = `
+      select count(user_id) as cnt, user_pw, user_nickname
+      from hghg_user
+      where user_id = ?
+   `;
+   conn.query(q, [uid],(err, results, fields)=>{
+      if(err){
+         console.log(err);
+         res.status(500).send('Internal Server Error');
+      }
+      let pw = req.body.userpw;
 
-		if(results[0].cnt == 1 && pw == results[0].user_pw){
-			let sess = req.session;
-			sess.uid = uid;
-			sess.nick = results[0].user_nickname;
-			res.redirect('/');
-		}
-		else
-			res.render('login/login_main', {isalert:true});
-	});
+      if(results[0].cnt == 1 && pw == results[0].user_pw){
+         let sess = req.session;
+         sess.uid = uid;
+         sess.nick = results[0].user_nickname;
+         res.redirect('/');
+      }
+      else
+         res.render('login/login_main', {isalert:true});
+   });
 });
 
 app.get('/logout', (req, res) => {
@@ -91,49 +91,49 @@ app.get('/find', (req, res) => {
 
 // Board set
 // app.get('/board', (req, res)=>{
-// 	var sess = req.session;
-// 	res.render('board/board_main', {user:sess.uid});
+//    var sess = req.session;
+//    res.render('board/board_main', {user:sess.uid});
 // });
 app.get('/board', (req, res) => {
     let qstr = `
-		select board_id, user_nickname, subject, contents, hit,
-			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
-			date_format(regdate, '%H:%i'),
-			date_format(regdate, '%Y.%m.%d.')) as date
-		from board b, hghg_user u
-		where b.user_id = u.user_id
-		order by board_id desc
-	`;
-	let sess = req.session;
-	conn.query(qstr, (err, results, fields)=>{
-		if(err){
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		}
-		res.render('board/board_main', {query:results, user:sess.nick});
-		//conn.release();
-	});
-	//conn.end();
+      select board_id, user_nickname, subject, contents, hit,
+         if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
+         date_format(regdate, '%H:%i'),
+         date_format(regdate, '%Y.%m.%d.')) as date
+      from board b, hghg_user u
+      where b.user_id = u.user_id
+      order by board_id desc
+   `;
+   let sess = req.session;
+   conn.query(qstr, (err, results, fields)=>{
+      if(err){
+         console.log(err);
+         res.status(500).send('Internal Server Error');
+      }
+      res.render('board/board_main', {query:results, user:sess.nick});
+      //conn.release();
+   });
+   //conn.end();
 });
 app.get('/board/write', (req, res)=>{
-	let sess = req.session;
-	if(sess.uid == undefined)
-		res.redirect('/login');
-	else
-		res.render('board/write',{user:sess.nick});
+   let sess = req.session;
+   if(sess.uid == undefined)
+      res.redirect('/login');
+   else
+      res.render('board/write',{user:sess.nick});
 });
 app.post('/board/write', (req, res)=>{
-	let n = req.session.uid;
-	let s = req.body.subject;
-	let str = req.body.contents;
+   let n = req.session.uid;
+   let s = req.body.subject;
+   let str = req.body.contents;
     console.log(str);
-	let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-	c = c.replace(/(\s)/g, '&nbsp;');
-	console.log(n, s, c);
-	let data = `
-		insert into board (user_id, subject, contents, hit, regdate)
-		values (?, ?, ?, 0, now())
-	`;
+   let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+   c = c.replace(/(\s)/g, '&nbsp;');
+   console.log(n, s, c);
+   let data = `
+      insert into board (user_id, subject, contents, hit, regdate)
+      values (?, ?, ?, 0, now())
+   `;
     conn.query(data, [n, s, c], (err, results) => {
         if (err) {
             console.log(err);
@@ -146,17 +146,17 @@ app.get('/board/:num', (req, res) => {
     let num = req.params.num;
     let sess = req.session;
     let vqstr = `
-		select board_id, b.user_id as id, user_nickname, subject, contents, hit,
-			date_format(regdate, '%Y.%m.%d. %H:%i') as date
-		from board b, hghg_user u
-		where b.user_id = u.user_id
-		and board_id = ?
-	`;
+      select board_id, b.user_id as id, user_nickname, subject, contents, hit,
+         date_format(regdate, '%Y.%m.%d. %H:%i') as date
+      from board b, hghg_user u
+      where b.user_id = u.user_id
+      and board_id = ?
+   `;
     let inc_hit = `
-		update board
-		set hit = hit + 1
-		where board_id = ?
-	`;
+      update board
+      set hit = hit + 1
+      where board_id = ?
+   `;
 
     conn.query(inc_hit, [num], (err, results, fields) => {
         if (err) {
@@ -176,9 +176,9 @@ app.get('/board/:num', (req, res) => {
 app.get('/board/:num/delete', (req, res) => {
     let num = req.params.num;
     let board_del = `
-		delete from board
-		where board_id = ?
-	`;
+      delete from board
+      where board_id = ?
+   `;
 
     conn.query(board_del, [num], (err, results, fields) => {
         if (err) {
@@ -193,27 +193,27 @@ app.get('/modify/:num', (req, res) => {
     let num = req.params.num;
     let sess = req.session;
     let ex_contents = `
-		select board_id, user_id, subject, contents, hit,
-		date_format(regdate, '%Y.%m.%d. %H:%i') as date
-		from board
-		where board_id = ?
-	`;
-	conn.query(ex_contents, [num], (err, results, fields) => {
-		if(err)
-		{
-			console.log(err);
-			res.status(500).send('Internal Server Error!');
-		}
-		res.render('board/modify', {article: results[0], user:sess.nick});
-	});
+      select board_id, user_id, subject, contents, hit,
+      date_format(regdate, '%Y.%m.%d. %H:%i') as date
+      from board
+      where board_id = ?
+   `;
+   conn.query(ex_contents, [num], (err, results, fields) => {
+      if(err)
+      {
+         console.log(err);
+         res.status(500).send('Internal Server Error!');
+      }
+      res.render('board/modify', {article: results[0], user:sess.nick});
+   });
 });
 
 app.post('/modify/:num', (req, res) => {
     let values = [req.body.subject, req.body.contents, req.params.num];
     let board_update = `
-		update board
-		set subject = ?, contents = ?
-		where board_id = ?`;
+      update board
+      set subject = ?, contents = ?
+      where board_id = ?`;
 
     conn.query(board_update, values, (err, result) => {
         if (err) {
