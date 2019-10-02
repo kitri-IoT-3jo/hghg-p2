@@ -49,7 +49,7 @@ app.post('/', (req, res) => {
     let user_name = req.body.username;
     let user_nickname = req.body.nickname;
     let email_id = req.body.emailid;
-    let email_domain = req.body.emaildomain;
+    let email_domain = req.body.emailself;
     let data = [user_id, user_pw, user_name, user_nickname, email_id, email_domain];
     console.log(data);
     conn.query(new_id, data, (err, results, fields)=>{
