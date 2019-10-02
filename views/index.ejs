@@ -4,6 +4,18 @@
 <head>
     <%- include('includes/_head')-%>
     <%- include('includes/nav')-%>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=62ca74fad4f3313264737ca47f865799"></script>
+    <script>
+        window.onload = function() {
+          var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+          var options = { //지도를 생성할 때 필요한 기본 옵션
+            center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+            level: 3 //지도의 레벨(확대, 축소 정도)
+          };
+          
+          var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+        }
+    </script>
     <meta charset="utf-8">
     <title>한끼함께</title>
 </head>
@@ -11,27 +23,24 @@
 <body id="page-top">
     <!-- Navigation -->
     <%- include('navbar/nav_main', {user:user})%>
-    <!-- Masthead -->
-    <header class="masthead">
-        <div class="container h-100">
+
+    <!-- map -->
+    <div class="clear-fix"></div>
+    <header style="margin-bottom: 20px">
+        <div class="h-100">
             <div class="row h-100 align-items-center justify-content-center text-center">
-                <div class="col-lg-10 align-self-end">
-                    <h1 class="text-uppercase text-white font-weight-bold">HGHG-Project</h1>
-                    <hr class="divider my-4">
-                </div>
-                <div class="col-lg-8 align-self-baseline">
-                    <p class="text-white-75 font-weight-light mb-5">여기에 메인 화면 구성</p>
-                </div>
+                <div id="map" style="width:1000px;height:600px;" class="col-lg-12 col-md-12 mb-12"></div>
             </div>
         </div>
     </header>
 
     <!-- restaurant Section -->
     <section id="restaurant">
+        <div class="h-120">
             <div class="row text-center restaurant">
                     <div class="col-lg-3 col-md-6 mb-4">
                       <div class="card h-100">
-                        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+                        <img class="card-img-top" src="../img/bg-masthead.jpg" alt="">
                         <div class="card-body">
                           <h4 class="card-title">식당 이름</h4>
                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
@@ -81,6 +90,7 @@
                       </div>
                     </div>
                   </div>
+               </div>
     </section>
 
     <!-- Footer -->

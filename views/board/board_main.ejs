@@ -43,7 +43,13 @@
                 </tr>
             </thead>
             <tbody>
-                <% query.forEach((q, key)=>{-%>
+                <%
+                for (var i=page_cnt;i<(page*cnt);i++){
+                    if (i>len) {
+                        i++;
+                    } else{ 
+                        let q = query[i];
+                        %>
                 <tr>
                     <td>
                         <%= q.board_id%>
@@ -62,9 +68,36 @@
                         <%= q.hit%>
                     </td>
                 </tr>
-                <% })-%>
+                <% }}%>
             </tbody>
         </table>
+        <ul class="pagination justify-content-center" style="margin:20px 0">
+            <%
+                if (page < 11) { %>
+
+                    <li class="page-item disabled"><a class="page-link" href="">이전</a></li>
+            <%
+                } else {
+                    %>
+                    <li class="page-item"><a class="page-link" href="/board/board_main/<%= page_group*10%>">이전</a></li>
+              <%
+                }
+            %>
+            <%
+                for (var k = 1; k <((len/cnt)/5)+1; k++) {
+                for(var j=0;j < len/cnt;j++){
+                    if (j > cnt*k) {
+                        j++;
+                    } else {
+            %>
+            <li class="page-item"><a class="page-link" href="/board/board_main/<%=j+1%>"><%=j+1%></a></li>
+            <%
+                    }
+                }
+            }
+            %>
+            <li class="page-item"><a class="page-link" href="/board/board_main/<%=j+1%>">다음</a></li>
+        </ul>
         <div class="text-right">
             <button type="button" class="btn btn-warning" id="write">글쓰기</button>
         </div>
