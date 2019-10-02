@@ -173,19 +173,48 @@ app.get('/board/:num', (req, res)=>{
 		set hit = hit + 1
 		where board_id = ?
 	`;
+	let comments = `
+		select comment_contents as comment, date_format(comment_time, '%Y.%m.%d. %H:%i') as date, user_nickname as nick
+		from comments c, hghg_user u, board b
+		where c.board_id = b.board_id
+		and c.user_id = u.user_id
+		and b.board_id = ?
+	`;
 
 	conn.query(inc_hit, [num],(err, results, fields)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
-		conn.query(vqstr, [num], (err, result, field)=>{
+		conn.query(vqstr, [num], (err, resultV, field)=>{
 			if(err){
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			}
-			res.render('board/view', {article:result[0],user:sess.nick, id:sess.uid});
+			conn.query(comments, [num], (err, resultC, field)=>{
+				if(err){
+					console.log(err);
+					res.status(500).send('Internal Server Error');
+				}
+				res.render('board/view', {article:resultV[0], comments:resultC, user:sess.nick, id:sess.uid});
+			});
 		});
+	});
+});
+app.post('/board/:num', (req, res)=>{
+	let num =req.params.num;
+	let comment = req.body.cmt;
+	let sess = req.session;
+	let insert_cmt = `
+		insert into comments (comment_contents, comment_time, board_id, user_id)
+		values (?, now(), ?, ?);
+	`;
+	conn.query(insert_cmt, [comment, num, sess.uid], (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			throw err;
+		}
+		res.redirect('/board/'+num);
 	});
 });
 

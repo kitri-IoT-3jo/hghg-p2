@@ -10,11 +10,39 @@
         document.getElementById('board').onclick = function() {
             location.href = '/board';
         }
+        document.getElementById('button-addon2').onclick = function(){
+            var str = document.getElementById('comment').value;
+            if(str==''){
+                alert('댓글을 입력해주세요.');
+                return;
+            }
+            var d = new Date();
+
+            var y = d.getFullYear();
+            var m = d.getMonth()+1;
+            var dd = d.getDate();
+            if (m < 10) m = '0'+m;
+            if (dd < 10) day = '0'+dd;
+            var datef = [y, m, dd].join('.');
+
+            var h = d.getHours();
+            var i = d.getMinutes();
+            if (h < 10) h = '0'+h;
+            if (i < 10) i = '0'+i;
+            var timef = [h, i].join(':');
+
+            var time = [datef, timef].join(' ');
+        }
+        if('<%= id%>'=='')
+            document.getElementById('button-addon2').setAttribute('disabled', 'disabled');
     }
     </script>
     <style type="text/css">
     .clear-fix {
         height: 100px;
+    }
+    div.comment {
+        border: 1 solid #909090;
     }
     </style>
 </head>
@@ -64,39 +92,34 @@
                 </tbody>
             </table>
         </div>
-        <div class="text-center">
-            <button type="button" class="btn btn-warning" id="board">목록</button>
-        </div>
         <!--댓글 부분-->
         <!--ajax로 그때그때 댓글 불러올 수 있고록 함-->
         <div>
             <div class="comments">
-                <h6>Comments (2)</h6>
+                <h6>Comments (<%= comments.length%>)</h6>
                 <hr>
+                <% comments.forEach((comment)=>{%>
                 <div class="comment">
                     <div class="top">
-                        <b>갑사</b>
-                        (2018-01-29,
-                        06:00:48)
+                        <b><%= comment.nick%></b>
+                        (<%= comment.date%>)
                     </div>
-                    <div class="body">그러게요.</div>
-                </div>
-                <div class="comment">
-                    <div class="top">
-                        <b>갑사</b>
-                        (2018-01-29,
-                        06:01:01)
-                    </div>
-                    <div class="body">Test.</div>
+                    <div class="body"><%= comment.comment%></div>
                 </div>
                 <br>
-                <div class="input-group mb-3 col-md-20">
-                    <textarea class="form-control" placeholder="타인에게 악의적인 댓글은 삼가주세요!'ㅅ'" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">입력</button>
+                <% });%>
+                <form action="/board/<%= article.board_id%>" method="post">
+                    <div class="input-group mb-3 col-md-20">
+                        <textarea class="form-control" placeholder="타인에게 악의적인 댓글은 삼가주세요!'ㅅ'" aria-label="Recipient's username" aria-describedby="button-addon2" id="comment" name="cmt"></textarea>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">입력</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn btn-warning" id="board">목록</button>
         </div>
     </div>
 </body>
