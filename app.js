@@ -129,25 +129,7 @@ app.get('/find', (req, res)=>{
 // 	res.render('board/board_main', {user:sess.uid});
 // });
 app.get('/board', (req, res)=>{
-	let qstr = `
-		select board_id, user_nickname, subject, contents, hit,
-			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
-			date_format(regdate, '%H:%i'),
-			date_format(regdate, '%Y.%m.%d.')) as date
-		from board b, hghg_user u
-		where b.user_id = u.user_id
-		order by board_id desc
-	`;
-	let sess = req.session;
-	conn.query(qstr, (err, results, fields)=>{
-		if(err){
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		}
-		res.render('board/board_main', {query:results, user:sess.nick});
-		//conn.release();
-	});
-	//conn.end();
+	res.redirect('board_main/1');
 });
 app.get('/board/write', (req, res)=>{
 	let sess = req.session;
@@ -260,4 +242,30 @@ app.post('/modify/:num', (req, res) => {
 		//res.render('board/write');
 		res.redirect('/board/'+ req.params.num);
 	});
+});
+app.get('/board_main/:page', (req, res)=>{
+	let page = req.params.page;
+	let qstr = `
+		select board_id, user_nickname, subject, contents, hit,
+			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
+			date_format(regdate, '%H:%i'),
+			date_format(regdate, '%Y.%m.%d.')) as date
+		from board b, hghg_user u
+		where b.user_id = u.user_id
+		order by board_id desc
+	`;
+	let cnt = 10;
+	let page_cnt = (page*cnt)-cnt;
+	let page_group = page/10;
+	let sess = req.session;
+	conn.query(qstr, (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		res.render('board/board_main', {query:results, user:sess.nick, page: page, cnt: 10, len: results.length-1, page_cnt: page_cnt, page_group: page_group});
+		console.log(results.length-1);
+		//conn.release();
+	});
+	//conn.end();
 });
