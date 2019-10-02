@@ -39,6 +39,27 @@ app.get('/', (req, res)=>{
 	let sess = req.session;
 	res.render('index', {user:sess.nick});
 });
+app.post('/', (req, res) => {
+    let new_id = `
+    	insert into hghg_user (user_id, user_pw, user_name, user_nickname, email_id, email_domain)
+		values (?, ?, ?, ?, ?, ?);
+    `;
+    let user_id = req.body.userid;
+    let user_pw = req.body.userpwd;
+    let user_name = req.body.username;
+    let user_nickname = req.body.nickname;
+    let email_id = req.body.emailid;
+    let email_domain = req.body.emailself;
+    let data = [user_id, user_pw, user_name, user_nickname, email_id, email_domain];
+    console.log(data);
+    conn.query(new_id, data, (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		res.redirect('/');
+	});
+});
 
 // Login set
 app.get('/login', (req, res)=>{
@@ -68,22 +89,35 @@ app.post('/login', (req, res)=>{
 	});
 });
 
-app.get('/logout', (req, res)=>{
-	let sess = req.session;
-	if(sess.uid){
-		req.session.destroy((err)=>{
-			if(err)
-				console.log(err);
-			else
-				res.redirect('/');
-		});
-	}
-	else
-		res.redirect('/');
+app.get('/logout', (req, res) => {
+    let sess = req.session;
+    if (sess.uid) {
+        req.session.destroy((err) => {
+            if (err)
+                console.log(err);
+            else
+                res.redirect('/');
+        });
+    } else
+        res.redirect('/');
 });
-app.get('/signup', (req, res)=>{
+app.get('/signup', (req, res) => {
 	let sess = req.session;
-	res.render('login/signup', {user:sess.nick});
+    let get_id = `
+    	select user_id
+    	from hghg_user
+    `;
+    let ids = new Array();
+    conn.query(get_id, (err, results, fields)=>{
+    	if(err){
+    		console.log(err);
+    		throw err;
+    	}
+    	for(var i = 0; i < results.length; i++)
+    		ids.push(results[i].user_id);
+
+    	res.render('login/signup', { ids: ids, user: sess.nick });
+    });
 });
 app.get('/find', (req, res)=>{
 	res.render('login/find.ejs');
@@ -95,25 +129,7 @@ app.get('/find', (req, res)=>{
 // 	res.render('board/board_main', {user:sess.uid});
 // });
 app.get('/board', (req, res)=>{
-	let qstr = `
-		select board_id, user_nickname, subject, contents, hit,
-			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
-			date_format(regdate, '%H:%i'),
-			date_format(regdate, '%Y.%m.%d.')) as date
-		from board b, hghg_user u
-		where b.user_id = u.user_id
-		order by board_id desc
-	`;
-	let sess = req.session;
-	conn.query(qstr, (err, results, fields)=>{
-		if(err){
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		}
-		res.render('board/board_main', {query:results, user:sess.nick});
-		//conn.release();
-	});
-	//conn.end();
+	res.redirect('board_main/1');
 });
 app.get('/board/write', (req, res)=>{
 	let sess = req.session;
@@ -126,20 +142,21 @@ app.post('/board/write', (req, res)=>{
 	let n = req.session.uid;
 	let s = req.body.subject;
 	let str = req.body.contents;
-	str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
-	let c = str;
-	console.log(n, s, c);;
+	let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+	c = c.replace(/(\s)/g, '&nbsp;');
+
 	let data = `
 		insert into board (user_id, subject, contents, hit, regdate)
 		values (?, ?, ?, 0, now())
 	`;
-	conn.query(data, [n,s,c], (err, results)=>{
-		if(err){
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		}
-		res.redirect('/board/'+results.insertId);
-	});
+
+    conn.query(data, [n, s, c], (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        }
+        res.redirect('/board/' + results.insertId);
+    });
 });
 app.get('/board/:num', (req, res)=>{
 	let num = req.params.num;
@@ -225,4 +242,31 @@ app.post('/modify/:num', (req, res) => {
 		//res.render('board/write');
 		res.redirect('/board/'+ req.params.num);
 	});
+});
+
+app.get('/board_main/:page', (req, res)=>{
+	let page = req.params.page;
+	let qstr = `
+		select board_id, user_nickname, subject, contents, hit,
+			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
+			date_format(regdate, '%H:%i'),
+			date_format(regdate, '%Y.%m.%d.')) as date
+		from board b, hghg_user u
+		where b.user_id = u.user_id
+		order by board_id desc
+	`;
+	let cnt = 10;
+	let page_cnt = (page*cnt)-cnt;
+	let page_group = page/10;
+	let sess = req.session;
+	conn.query(qstr, (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		res.render('board/board_main', {query:results, user:sess.nick, page: page, cnt: 10, len: results.length-1, page_cnt: page_cnt, page_group: page_group});
+		console.log(results.length-1);
+		//conn.release();
+	});
+	//conn.end();
 });
