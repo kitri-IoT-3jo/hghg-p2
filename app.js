@@ -135,15 +135,14 @@ app.get('/board', (req, res)=>{
 			date_format(regdate, '%H:%i'),
 			date_format(regdate, '%Y.%m.%d.')) as date
 		from (select @RNUM := @RNUM + 1 as rownum, t.*
-		from (select * from board order by board_id desc) t, ( select @RNUM := 0 ) r) c, hghg_user h
+		from (select * from board order by board_id desc limit ?, 10) t, ( select @RNUM := 0 ) r) c, hghg_user h
 		where c.user_id = h.user_id
-		and ceil(rownum/10) = ?
 	`;
 	let get_pages = `
 		select ceil(count(board_id)/10) as p
 		from board
 	`;
-	conn.query(get_binfo, [page], (err, bresults, fields)=>{
+	conn.query(get_binfo, [(page-1)*10], (err, bresults, fields)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send('Internal Server Error');
