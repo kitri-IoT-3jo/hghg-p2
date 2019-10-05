@@ -63,8 +63,8 @@
         var listEl = document.getElementById('placesList'), 
         menuEl = document.getElementById('menu_wrap'),
         fragment = document.createDocumentFragment(), 
-        bounds = new kakao.maps.LatLngBounds(),
-        restaurant = document.getElementById('restaurant');
+        bounds = new kakao.maps.LatLngBounds(), 
+        listStr = '';
         
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         removeAllChildNods(listEl);
@@ -80,7 +80,7 @@
                 marker = addMarker(placePosition, i), 
                 itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
                 itemCard = getListRestaurant(i, places[i]);
-            
+    
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
             bounds.extend(placePosition);
@@ -98,7 +98,7 @@
                 });
     
                 kakao.maps.event.addListener(marker, 'click', function() {
-                    //alert(place.place_name + '을 눌렀습니다!');
+                    alert(place.place_name + '을 눌렀습니다!');
                     location.href = place.place_url;
                 });
     
@@ -111,9 +111,7 @@
                 };
     
                 itemEl.onclick =  function () {
-                    alert('눌렀습니다!');
-                    var link = '#card' + i;
-                    location.href = link;
+                    //alert('눌렀습니다!');
                 };
 
                 itemCard.onclick = function() {
@@ -137,8 +135,8 @@
     function getListItem(index, places) {
     
         var el = document.createElement('li'),
-        itemStr = '<span class="markerbg marker_' + index + '"></span>' +
-                    '<div class="info">' +
+        itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                    '<a href="#card' + index + '"><div class="info">' +
                     '   <h5>' + places.place_name + '</h5>';
     
         if (places.road_address_name) {
@@ -146,10 +144,10 @@
                         '   <span class="jibun gray">' +  places.address_name  + '</span>';
         } else {
             itemStr += '    <span>' +  places.address_name  + '</span>'; 
-        }                       
-        itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>';
-        
+        }
+                        
+            itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                    '</div></a>';           
     
         el.innerHTML = itemStr;
         el.className = 'item';
@@ -158,9 +156,8 @@
     }
 
     function getListRestaurant(index, places) {
-
         var card = document.createElement('div');
-        var itemStr = '<div class="card h-100" id="card' + (index + 1) + '">'
+        var itemStr = '<div class="card h-100" id="card' + index + '">'
                         + '<img class="card-img-top" src="../img/bg-masthead.jpg" alt="">'
                         + '<div class="card-body">'
                         + '<h4 class="card-title">'
@@ -178,7 +175,6 @@
         
         card.innerHTML = itemStr;
         card.className = 'col-lg-3 col-md-6 mb-4'
-
         return card;
     }
     
