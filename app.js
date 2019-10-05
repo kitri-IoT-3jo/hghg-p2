@@ -4,10 +4,10 @@ const session = require('express-session');
 const app = express();
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-	host 	: '183.101.196.145',
+	host 	: '127.0.0.1',
 	port 	: 3306,
-	user 	: 'hghg',
-	password: 'hghg',
+	user 	: 'root',
+	password: '',
 	database: 'hghgp'
 });
 
