@@ -4,10 +4,10 @@ const session = require('express-session');
 const app = express();
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-	host 	: '127.0.0.1',
+	host 	: '183.101.196.145',
 	port 	: 3306,
-	user 	: 'root',
-	password: '',
+	user 	: 'hghg',
+	password: 'hghg',
 	database: 'hghgp'
 });
 
@@ -305,7 +305,6 @@ app.post('/modify/:num', (req, res) => {
 		//res.render('board/write');
 		res.redirect('/board/'+ req.params.num);
 	});
-<<<<<<< HEAD
 });
 app.get('/board_main/:page', (req, res)=>{
 	let page = req.params.page;
@@ -364,7 +363,3 @@ app.post('/board/search' , (req,res)=>{
 			res.render('board/search' , { query : results, user:sess.nick , page: page, cnt: 10, len: results.length-1, page_cnt: page_cnt, page_group: page_group });
 		});
 });
-
-=======
-});
->>>>>>> master
