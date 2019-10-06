@@ -6,9 +6,9 @@ const mysql = require('mysql');
 const conn = mysql.createConnection({
 	host 	: '127.0.0.1',
 	port 	: 3306,
-	user 	: 'root',
-	password: '',
-	database: 'hghgp'
+	user 	: 'hghgtmp',
+	password: 'hghg',
+	database: 'hghgtmp'
 });
 
 app.set('views', 'views');
@@ -127,44 +127,72 @@ app.get('/find', (req, res)=>{
 app.get('/board', (req, res)=>{
 	let sess = req.session;
 	let page = req.query.page;
+	let type = req.query.searchType;
+	let text = req.query.searchText;
 	if(page == undefined) page = 1;
 
+	let value1 = new Array();
+	let value2 = new Array();
+	value1[0] = (page-1)*10;
+
 	let get_binfo = `
-		select board_id, user_nickname, subject, contents, hit,
+		select board_id, nickname, subject, contents, hit,
 			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
 			date_format(regdate, '%H:%i'),
 			date_format(regdate, '%Y.%m.%d.')) as date
 		from (select @RNUM := @RNUM + 1 as rownum, t.*
-		from (select * from board order by board_id desc limit ?, 10) t, ( select @RNUM := 0 ) r) c, hghg_user h
-		where c.user_id = h.user_id
+		from (select * from board
 	`;
 	let get_pages = `
 		select ceil(count(board_id)/10) as p
 		from board
 	`;
-	conn.query(get_binfo, [(page-1)*10], (err, bresults, fields)=>{
+	if(text == undefined || text == ''){
+		get_binfo += `
+		order by board_id desc limit ?, 10) t, ( select @RNUM := 0 ) r) c
+		`;
+	} else{
+		if(type == 'sub_con'){
+			value1[2] = value1[0];
+			value1[1] = '%'+text+'%';
+			value1[0] = '%'+text+'%';
+			value2[0] = '%'+text+'%';
+			value2[1] = '%'+text+'%';
+			
+			get_binfo += `
+			where subject like ?
+			or contents like ?
+			order by board_id desc limit ?, 10) t, ( select @RNUM := 0 ) r) c
+			`;
+			get_pages += ' where subject like ? or contents like ?';
+		}
+		else if(type == 'name'){
+			value1[1] = value1[0];
+			value1[0] = '%'+text+'%';
+			value2[0] = '%'+text+'%';
+			
+			get_binfo += `
+			where nickname like ?
+			order by board_id desc limit ?, 10) t, ( select @RNUM := 0 ) r) c
+			`;
+			get_pages += ' where nickname like ?';
+		}
+	}
+	conn.query(get_binfo, value1, (err, bresults, fields)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
-		conn.query(get_pages, (err, presults, fields)=>{
+		conn.query(get_pages, value2, (err, presults, fields)=>{
 			if(err){
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			}
-			res.render('board/board_main', {query:bresults, pages: presults[0].p, user:sess.nick, cpage:page});
+			res.render('board/board_main', {query:bresults, pages: presults[0].p, user:sess.nick, cpage:page, search:[type, text]});
 		});
 	});
 });
 // page num ë°›ê¸°
-app.get('/board/page=:num', (req, res)=>{
-	let pnum = req.params.num;
-	res.redirect('/board/?page='+pnum);
-});
-app.get('/board/pagegroup=:gnum', (req, res)=>{
-	let gnum = req.params.gnum;
-	res.redirect('/board/?page='+(gnum+1));
-});
 app.get('/board/write', (req, res)=>{
 	let sess = req.session;
 	if(sess.uid == undefined)
@@ -173,18 +201,20 @@ app.get('/board/write', (req, res)=>{
 		res.render('board/write',{user:sess.nick});
 });
 app.post('/board/write', (req, res)=>{
-	let n = req.session.uid;
+	let sess = req.session;
+	let i = sess.uid;
+	let n = sess.nick;
 	let s = req.body.subject;
 	let str = req.body.contents;
 	let c = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 	c = c.replace(/(\s)/g, '&nbsp;');
 
 	let data = `
-		insert into board (user_id, subject, contents, hit, regdate)
-		values (?, ?, ?, 0, now())
+		insert into board (user_id, nickname, subject, contents, hit, regdate)
+		values (?, ?, ?, ?, 0, now())
 	`;
 
-    conn.query(data, [n, s, c], (err, results) => {
+    conn.query(data, [i, n, s, c], (err, results) => {
         if (err) {
             console.log(err);
             res.status(500).send('Internal Server Error');
@@ -196,10 +226,10 @@ app.get('/board/:num', (req, res)=>{
 	let num = req.params.num;
 	let sess = req.session;
 	let vqstr = `
-		select board_id, b.user_id as id, user_nickname, subject, contents, hit,
+		select board_id, b.user_id as id, nickname, subject, contents, hit,
 			date_format(regdate, '%Y.%m.%d. %H:%i') as date
-		from board b, hghg_user u
-		where b.user_id = u.user_id
+		from board b, hghg_user h
+		where b.user_id = h.user_id
 		and board_id = ?
 	`;
 	let inc_hit = `
@@ -209,9 +239,9 @@ app.get('/board/:num', (req, res)=>{
 	`;
 	let comments = `
 		select comment_contents as comment, date_format(comment_time, '%Y.%m.%d. %H:%i') as date, user_nickname as nick
-		from comments c, hghg_user u, board b
+		from comments c, board b, hghg_user h
 		where c.board_id = b.board_id
-		and c.user_id = u.user_id
+		and c.user_id = h.user_id
 		and b.board_id = ?
 	`;
 

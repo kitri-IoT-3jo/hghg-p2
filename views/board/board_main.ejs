@@ -10,6 +10,17 @@
         document.getElementById('write').onclick = function() {
             location.href = '/board/write';
         }
+        document.getElementById('to_board_main').onclick = function() {
+            location.href = '/board';
+        }
+    }
+    function next_page(num){
+        var type = '<%=search[0]%>';
+        var search = '<%=search[1]%>';
+        if(search == undefined || search == '')
+            location.href = '/board?page='+num;
+        else
+            location.href = '/board?page='+num+'&searchType=<%=search[0]%>&searchText=<%=search[1]%>';
     }
     </script>
     <style type="text/css">
@@ -25,13 +36,16 @@
           width: 50px;
           font-size: 1em;
       }
-      .pagebtns[href='/board/page=<%=cpage%>']{
+      .pagebtns[href='javascript:next_page(<%=cpage%>);']{
           color: white;
           background-color: #ffc107;
           border-radius: 5px
       }
       .form-inline{
           float: right;
+      }
+      #to_board_main:hover{
+          cursor:pointer;
       }
     </style>
 </head>
@@ -41,10 +55,10 @@
     <%- include('../navbar/nav_main', {user:user})%>
     <div class="clear-fix"></div>
     <div class="container">
-        <h3 style="display: inline; width: 50%;">전체글보기</h3>
-        <form class="form-inline" action="/action_page.php" >
-            <select name="searchType" style="display: inline; width: 80px; margin-right: 10px;">
-                    <option value="subject"> 제목 </option>
+        <h3 style="display: inline; width: 50%;" id="to_board_main">전체글보기</h3>
+        <form class="form-inline" action="/board" method="get">
+            <select name="searchType" style="display: inline; width: 115px; margin-right: 10px;">
+                    <option value="sub_con"> 제목+내용 </option>
                     <option value="name"> 작성자 </option>
             </select> 
             <input type="text" id="searchText" name="searchText" style="display: inline; width: 200px"> 
@@ -72,7 +86,7 @@
                 <tr>
                     <td><%= q.board_id%></td>
                     <td><a href="/board/<%= q.board_id-%>"><%= q.subject%></a></td>
-                    <td><%= q.user_nickname%></td>
+                    <td><%= q.nickname%></td>
                     <td><%= q.date%></td>
                     <td><%= q.hit%></td>
                 </tr>

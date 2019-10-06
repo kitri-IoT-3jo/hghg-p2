@@ -1,12 +1,12 @@
 <%gnum=Math.ceil(cpage/10)%>
 <%if(gnum>1){%>
-<a class="nextgroup" href="/board/pagegroup=<%=gnum-2%>">< 이전</a>
+<a class="nextgroup" href="javascript:next_page(<%=(gnum-2)*10+1%>);">< 이전</a>
 <%}if(pages<=gnum*10){%>
 <%for(var i = (gnum-1)*10+1; i <= pages; i++){%>
-<a class="pagebtns" href="/board/page=<%=i%>"><%= i%></a>
+<a class="pagebtns" href="javascript:next_page(<%=i%>);"><%= i%></a>
 <%}}else{%>
 <%for(var i = (gnum-1)*10 + 1; i <= (gnum-1)*10 + 10; i++){%>
-<a class="pagebtns" href="/board/page=<%=i%>"><%= i%></a>
+<a class="pagebtns" href="javascript:next_page(<%=i%>);"><%= i%></a>
 <%}%>
-<a class="nextgroup" href="/board/pagegroup=<%=gnum%>">다음 ></a>
+<a class="nextgroup" href="javascript:next_page(<%=gnum*10+1%>);">다음 ></a>
 <%}%>
