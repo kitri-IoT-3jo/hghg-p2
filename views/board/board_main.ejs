@@ -13,9 +13,6 @@
     }
     </script>
     <style type="text/css">
-      .clear-fix{
-        height: 100px;
-      }
       .pagebtns {
           display: inline-block;
           height: 24px;
@@ -33,6 +30,9 @@
           background-color: #ffc107;
           border-radius: 5px
       }
+      .form-inline{
+          float: right;
+      }
     </style>
 </head>
 
@@ -41,7 +41,15 @@
     <%- include('../navbar/nav_main', {user:user})%>
     <div class="clear-fix"></div>
     <div class="container">
-        <h3>전체글보기</h3><br>
+        <h3 style="display: inline; width: 50%;">전체글보기</h3>
+        <form class="form-inline" action="/action_page.php" >
+            <select name="searchType" style="display: inline; width: 80px; margin-right: 10px;">
+                    <option value="subject"> 제목 </option>
+                    <option value="name"> 작성자 </option>
+            </select> 
+            <input type="text" id="searchText" name="searchText" style="display: inline; width: 200px"> 
+            <button type="submit" class="btn btn-light" style="display: inline">검색</button>
+        </form>
         <table class="table table-hover">
             <colgroup>
                 <col width="80px">
@@ -75,15 +83,6 @@
             <button type="button" class="btn btn-warning" id="write">글쓰기</button>
         </div>
         <div class="text-center"><%- include('./board_buttons', {pages:pages, cpage:cpage})%></div>
-        <div>
-            <form method="get" action="" enctype="multipart/form-data" class="float-left" novalidate>
-                <select name="searchType">
-                    <option value="subject"> 제목 </option>
-                    <option value="name"> 작성자 </option>
-                </select> 
-                <input type="text" id="searchText" name="searchText"> <button type="submit" class="btn">검색</button>
-            </form> 
-        </div>
     </div>
 </body>
 
