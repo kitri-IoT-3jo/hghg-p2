@@ -6,15 +6,9 @@ const mysql = require('mysql');
 const conn = mysql.createConnection({
 	host 	: '183.101.196.145',
 	port 	: 3306,
-<<<<<<< HEAD
 	user 	: 'hghg',
 	password: 'hghg',
 	database: 'hghgp'
-=======
-	user 	: 'hghgtmp',
-	password: 'hghg',
-	database: 'hghgtmp'
->>>>>>> master
 });
 
 app.set('views', 'views');
