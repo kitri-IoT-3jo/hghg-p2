@@ -48,30 +48,34 @@
                     if (i>len) {
                         i++;
                     } else{ 
-                        let q = query[i];
                         %>
                 <tr>
                     <td>
-                        <%= q.board_id%>
+                        <%= query[i].board_id%>
                     </td>
                     <td>
-                        <a href="/board/<%= q.board_id-%>">
-                            <%= q.subject%></a>
+                        <a href="/board/<%= query[i].board_id-%>">
+                            <%= query[i].subject%></a>
                     </td>
                     <td>
-                        <%= q.user_nickname%>
+                        <%= query[i].user_nickname%>
                     </td>
                     <td>
-                        <%= q.date%>
+                        <%= query[i].date%>
                     </td>
                     <td>
-                        <%= q.hit%>
+                        <%= query[i].hit%>
                     </td>
                 </tr>
-                <% }}%>
+                <%}}%>
             </tbody>
         </table>
-        <form method="post" action="/board/search" class="float-left" novalidate>
+
+
+
+
+<div>
+        <form method="post" action="/board_main/1" class="float-left" novalidate>
             <select name="searchType">
                 <option value="subject"> 제목 </option>
                 <option value="name"> 작성자 </option>
@@ -105,7 +109,7 @@
             %>
             <li class="page-item"><a class="page-link" href="/board_main/<%=(page_group+1)*10%>">다음</a></li>
         </ul>
-
+</div>
         <div class="text-right">
             <button type="button" class="btn btn-warning" id="write">글쓰기</button>
         </div>

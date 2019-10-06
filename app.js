@@ -264,8 +264,40 @@ app.get('/board_main/:page', (req, res)=>{
 			res.status(500).send('Internal Server Error');
 		}
 		res.render('board/board_main', {query:results, user:sess.nick, page: page, cnt: 10, len: results.length-1, page_cnt: page_cnt, page_group: page_group});
-		console.log(results.length-1);
 		//conn.release();
 	});
 	//conn.end();
 });
+
+//서치서피서치
+
+app.post('/board/search' , (req,res)=>{
+	let ser = req.body.searchText;
+	console.log('ser >>>>>>>>>>>>>>>>>>>>>>>> ' + ser);
+	let sess = req.session;
+	let board_search =`
+		select board_id, user_nickname, subject, contents, hit,
+			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
+			date_format(regdate, '%H:%i'),
+			date_format(regdate, '%Y.%m.%d.')) as date
+		from board b, hghg_user u
+		where b.user_id = u.user_id
+		and subject like ?
+		order by board_id desc
+	`;
+	ser = '%' + ser + '%';
+	// ser = '%a%';
+
+		conn.query(board_search, [ser] ,(err,results,fuleds)=>{
+			if (err){
+				console.log(err);
+				res.status(500).send('검색에렁비니다');
+			}
+			let page = (results.length/10)+1;
+			let cnt = 10;
+			let page_cnt = (page*cnt)-cnt;
+			let page_group = page/10;
+			res.render('board/search' , { query : results, user:sess.nick , page: page, cnt: 10, len: results.length-1, page_cnt: page_cnt, page_group: page_group });
+		});
+});
+
