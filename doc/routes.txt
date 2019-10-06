@@ -1,0 +1,27 @@
+																							views
+/							: 	get  >> 메인 페이지											index.ejs
+								post >> 회원가입 완료 후 메인 페이지 이동
+
+	/login					: 	get  >> 로그인 												login/login_main.ejs
+							  	post >> 로그인 페이지 이동(select)
+
+	/logout					:	로그아웃 후 메인 페이지 이동
+
+	/signup					:	회원가입 페이지(select)										login/signup.ejs
+
+	/find					:	아이디/비밀번호 찾기											login/find.ejs
+
+	/board					:	게시판 목록 이동
+
+	/board/write			:	get  >> 게시글 작성											board/write.ejs		
+								post >> 작성글 보기 페이지 이동	
+
+	/board/:num				: 	ges	 >> 게시판 글보기(select, update(조회수), select(댓글))	board/view.ejs
+								post >> 댓글 작성 후 게시글 보기
+
+	/board/:num/delete		:	글삭제(delete) 후 게시판 목록 이동
+
+	/modify/:num			: 	get   >> 글수정 페이지 이동(select)							board/modify.ejs
+							  	post  >> 글수정 후 게시글 이동(update)
+
+	/board_main/:page		: 	페이징(select)			  									board/board_main.ejs

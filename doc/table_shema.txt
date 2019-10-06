@@ -1,0 +1,89 @@
+
+table board
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| board_id | int(11)     | NO   | PRI | NULL    | auto_increment |
+| subject  | varchar(90) | YES  |     | NULL    |                |
+| contents | text        | YES  |     | NULL    |                |
+| hit      | int(11)     | YES  |     | NULL    |                |
+| regdate  | datetime    | YES  |     | NULL    |                |
+| user_id  | varchar(20) | NO   | MUL | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+
+table hghg_user
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| user_id       | varchar(20) | NO   | PRI | NULL    |       |
+| user_pw       | varchar(20) | YES  |     | NULL    |       |
+| user_name     | varchar(30) | YES  |     | NULL    |       |
+| user_nickname | varchar(20) | YES  |     | NULL    |       |
+| email_id      | varchar(30) | YES  |     | NULL    |       |
+| email_domain  | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
+table app_mem
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| mem_t_id   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| check_host | varchar(1)  | YES  |     | NULL    |                |
+| user_id    | varchar(20) | NO   | MUL | NULL    |                |
+| app_id     | int(11)     | NO   | MUL | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+
+table rest_app
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| app_id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| app_title | varchar(45) | YES  |     | NULL    |                |
+| app_date  | datetime    | YES  |     | NULL    |                |
+| max_mem   | int(11)     | YES  |     | NULL    |                |
+| curr_mem  | int(11)     | YES  |     | NULL    |                |
+| rest_id   | int(11)     | NO   | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+
+table rest
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| rest_id   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| rest_name | varchar(45) | YES  |     | NULL    |                |
+| rest_eval | int(11)     | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+
+table rest_img
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| ri_id      | int(11)      | NO   | PRI | NULL    | auto_increment |
+| original   | varchar(100) | YES  |     | NULL    |                |
+| savename   | varchar(100) | YES  |     | NULL    |                |
+| savefolder | varchar(6)   | YES  |     | NULL    |                |
+| rest_id    | int(11)      | NO   | MUL | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+
+table comments
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| comment_id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| comment_contents | varchar(900) | YES  |     | NULL    |                |
+| comment_time     | datetime     | YES  |     | NULL    |                |
+| board_id         | int(11)      | NO   | MUL | NULL    |                |
+| user_id          | varchar(20)  | NO   | MUL | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
+
+table board_img
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| bi_id      | int(11)      | NO   | PRI | NULL    | auto_increment |
+| original   | varchar(100) | YES  |     | NULL    |                |
+| savename   | varchar(100) | YES  |     | NULL    |                |
+| savefolder | varchar(6)   | YES  |     | NULL    |                |
+| board_id   | int(11)      | NO   | MUL | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+

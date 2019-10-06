@@ -1,0 +1,90 @@
+hghg-p2
+	-doc
+		project_structure.txt : project 폴더(파일) 구조
+		table_schema.txt : mysql >> table info
+		routes.txt : route info
+
+	-node_modules
+
+	-pulic : static file
+		-css
+			creative.css
+			creative.min.css
+			login_main.css
+			logout_button.css
+
+		-img
+			-portfolio
+				-fullsize
+					1.jpg
+					2.jpg
+					3.jpg
+					4.jpg
+					5.jpg
+					6.jpg
+
+				-thumbnails
+					1.jpg
+					2.jpg
+					3.jpg
+					4.jpg
+					5.jpg
+					6.jpg
+
+			alarm.png
+			bg-masthead.jpg
+			chat.png
+			cutlery.svg
+			fork.svg
+			host.jpg
+			host.png
+			logo.png
+			profile.jpg
+			profile.png
+			restaurant.svg
+			ㅎㄲㅎㄲ.png
+			한끼함께.png
+
+		-js
+			creative.js
+			creative.min.js
+			go_to_main_logo.js
+
+		-scss : bootstrap 사용 하기 위한 용도
+		-vendor : bootstrap 사용 하기 위한 용도
+
+	-views
+		index.ejs
+		-board
+			board_main.ejs
+			modify.ejs
+			view.ejs
+			write.ejs
+
+		-community
+			board.ejs
+			baord_new.html
+
+		-includes
+			_head.ejs
+			board.ejs
+			nav.ejs
+			sample.ejs
+
+		-login
+			find.ejs
+			find.html
+			idfindresult.html
+			login_main.ejs
+			pwdfindresult.html
+			signup.ejs
+
+		-navbar
+			nav_main.ejs
+			user.ejs
+
+		-restaurant
+			sample.ejs
+
+	app.js
+	readme.txt

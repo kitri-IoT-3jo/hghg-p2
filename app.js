@@ -4,10 +4,10 @@ const session = require('express-session');
 const app = express();
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-	host 	: '183.101.196.145',
+	host 	: '127.0.0.1',
 	port 	: 3306,
-	user 	: 'hghg',
-	password: 'hghg',
+	user 	: 'root',
+	password: '',
 	database: 'hghgp'
 });
 
@@ -124,12 +124,46 @@ app.get('/find', (req, res)=>{
 });
 
 // Board set
-// app.get('/board', (req, res)=>{
-// 	var sess = req.session;
-// 	res.render('board/board_main', {user:sess.uid});
-// });
 app.get('/board', (req, res)=>{
-	res.redirect('board_main/1');
+	let sess = req.session;
+	let page = req.query.page;
+	if(page == undefined) page = 1;
+
+	let get_binfo = `
+		select board_id, user_nickname, subject, contents, hit,
+			if(date_format(now(), '%Y%m%d')=date_format(regdate, '%Y%m%d'),
+			date_format(regdate, '%H:%i'),
+			date_format(regdate, '%Y.%m.%d.')) as date
+		from (select @RNUM := @RNUM + 1 as rownum, t.*
+		from (select * from board order by board_id desc limit ?, 10) t, ( select @RNUM := 0 ) r) c, hghg_user h
+		where c.user_id = h.user_id
+	`;
+	let get_pages = `
+		select ceil(count(board_id)/10) as p
+		from board
+	`;
+	conn.query(get_binfo, [(page-1)*10], (err, bresults, fields)=>{
+		if(err){
+			console.log(err);
+			res.status(500).send('Internal Server Error');
+		}
+		conn.query(get_pages, (err, presults, fields)=>{
+			if(err){
+				console.log(err);
+				res.status(500).send('Internal Server Error');
+			}
+			res.render('board/board_main', {query:bresults, pages: presults[0].p, user:sess.nick, cpage:page});
+		});
+	});
+});
+// page num ë°›ê¸°
+app.get('/board/page=:num', (req, res)=>{
+	let pnum = req.params.num;
+	res.redirect('/board/?page='+pnum);
+});
+app.get('/board/pagegroup=:gnum', (req, res)=>{
+	let gnum = req.params.gnum;
+	res.redirect('/board/?page='+(gnum+1));
 });
 app.get('/board/write', (req, res)=>{
 	let sess = req.session;
@@ -173,19 +207,48 @@ app.get('/board/:num', (req, res)=>{
 		set hit = hit + 1
 		where board_id = ?
 	`;
+	let comments = `
+		select comment_contents as comment, date_format(comment_time, '%Y.%m.%d. %H:%i') as date, user_nickname as nick
+		from comments c, hghg_user u, board b
+		where c.board_id = b.board_id
+		and c.user_id = u.user_id
+		and b.board_id = ?
+	`;
 
 	conn.query(inc_hit, [num],(err, results, fields)=>{
 		if(err){
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
-		conn.query(vqstr, [num], (err, result, field)=>{
+		conn.query(vqstr, [num], (err, resultV, field)=>{
 			if(err){
 				console.log(err);
 				res.status(500).send('Internal Server Error');
 			}
-			res.render('board/view', {article:result[0],user:sess.nick, id:sess.uid});
+			conn.query(comments, [num], (err, resultC, field)=>{
+				if(err){
+					console.log(err);
+					res.status(500).send('Internal Server Error');
+				}
+				res.render('board/view', {article:resultV[0], comments:resultC, user:sess.nick, id:sess.uid});
+			});
 		});
+	});
+});
+app.post('/board/:num', (req, res)=>{
+	let num =req.params.num;
+	let comment = req.body.cmt;
+	let sess = req.session;
+	let insert_cmt = `
+		insert into comments (comment_contents, comment_time, board_id, user_id)
+		values (?, now(), ?, ?);
+	`;
+	conn.query(insert_cmt, [comment, num, sess.uid], (err, results, fields)=>{
+		if(err){
+			console.log(err);
+			throw err;
+		}
+		res.redirect('/board/'+num);
 	});
 });
 
@@ -242,6 +305,7 @@ app.post('/modify/:num', (req, res) => {
 		//res.render('board/write');
 		res.redirect('/board/'+ req.params.num);
 	});
+<<<<<<< HEAD
 });
 app.get('/board_main/:page', (req, res)=>{
 	let page = req.params.page;
@@ -301,3 +365,6 @@ app.post('/board/search' , (req,res)=>{
 		});
 });
 
+=======
+});
+>>>>>>> master

@@ -53,6 +53,7 @@ html {
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  overflow-x: hidden;
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -4869,6 +4870,32 @@ input[type="button"].btn-block {
 
 .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
   color: #fff;
+}
+
+iframe {
+  width: 1280px;
+  height: 786px;
+  border: 0;
+
+  -ms-transform: scale(0.35);
+  -moz-transform: scale(0.35);
+  -o-transform: scale(0.35);
+  -webkit-transform: scale(0.35);
+  transform: scale(0.35);
+
+  -ms-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+
+.frameWrap {
+  width: 100%;
+  height: 192px;
+  padding: 0;
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .card {
@@ -10663,12 +10690,7 @@ hr.light {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 72px);
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(92, 77, 66, 0.8)), to(rgba(92, 77, 66, 0.8))), url("../img/bg-masthead.jpg");
-  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../img/bg-masthead.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-size: cover;
+ 
 }
 
 header.masthead h1 {
@@ -10696,53 +10718,168 @@ header.masthead h1 {
   }
 }
 
-#portfolio .container-fluid {
-  max-width: 1920px;
+/* signup.ejs*/
+div.main {
+    border-radius: 5px;
+    background-color: #ffd191;
+    padding: 50px;
+    margin: auto;
+    width: 550px;
+    margin-top: 100px;
+    overflow: hidden;
+    font-size: 0.9em; 
 }
 
-#portfolio .container-fluid .portfolio-box {
-  position: relative;
-  display: block;
+h1 {
+    color: #FACC2E;
+    text-align: center;
 }
 
-#portfolio .container-fluid .portfolio-box .portfolio-box-caption {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-  opacity: 0;
-  color: #fff;
-  background: rgba(244, 98, 58, 0.9);
-  -webkit-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
-  text-align: center;
+input[type=text],
+input[type=password],
+select {
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ced4da;
+    margin: 10px 0;
+    box-sizing: border-box;
 }
 
-#portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-category {
-  font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
+input[name^=email],
+select[name^=email] {
+    border-radius: 5px;
+    padding: 10px;
+    width: 30%;
+    border: 1px solid #000000;
+    margin: 10px 0px 10px 0px;
+    box-sizing: border-box;
+    float: left;
 }
 
-#portfolio .container-fluid .portfolio-box .portfolio-box-caption .project-name {
-  font-size: 1.2rem;
+span.email {
+    width: 5%;
+    height: 15px;
+    margin: 11px 0;
+    padding: 10px 0;
+    text-align: center;
+    line-height: 50%;
+    float: left;
 }
 
-#portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption {
-  opacity: 1;
+input[name^=tel],
+select[name^=tel] {
+    border-radius: 5px;
+    padding: 10px;
+    width: 20%;
+    border: 1px solid #000000;
+    margin: 10px 0px 10px 0px;
+    box-sizing: border-box;
+    float: left;
 }
+
+span.phone {
+    width: 5%;
+    height: 15px 0;
+    margin: 11px 0;
+    padding: 10px 0;
+    text-align: center;
+    line-height: 50%;
+}
+
+div.introduce {
+    font-weight: bold;
+    width: 30%;
+    margin-top: 10px;
+
+}
+
+input[type=submit] {
+    width: 100%;
+    border: 0;
+    padding: 10px;
+    background-color: #f4a161;
+    margin: 2px 0;
+    font-size: 0.9em;
+}
+
+/*inputs for submit and reset*/
+input[type=submit]:hover {
+    background-color: #f49151;
+    font-weight: bold;
+}
+
+input[type=reset] {
+    width: 100%;
+    border: 0;
+    padding: 10px;
+    background-color: #c0c0c0;
+    margin: 2px 0;
+    font-size: 0.9em;
+}
+
+input[type=reset]:hover {
+    background-color: #a0a0a0;
+    font-weight: bold;
+}
+div.date{
+    overflow: hidden;
+}
+div.date > select{
+    float: left;
+    width: 25%;
+}
+span.date{
+    float: left;
+    width: 8%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.restaurant {
+  margin-top: 20px;
+  padding: 15px 4% 0px 4%;
+  overflow-x: hidden;
+}
+
+.clear-fix {
+  height: 100px;
+}
+
+/*지도 오버레이 관련*/
+.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+.map_wrap {position:relative;width:100%;height:500px;}
+#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+.bg_white {background:#fff;}
+#menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+#menu_wrap .option{text-align: center;}
+#menu_wrap .option p {margin:10px 0;}  
+#menu_wrap .option button {margin-left:5px;}
+#placesList li {list-style: none;}
+#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+#placesList .item span {display: block;margin-top:4px;}
+#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+#placesList .item .info{padding:10px 0 10px 55px;}
+#placesList .info .gray {color:#8a8a8a;}
+#placesList .info .jibun {padding-left:26px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+#placesList .info .tel {color:#009900;}
+#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+#placesList .item .marker_1 {background-position: 0 -10px;}
+#placesList .item .marker_2 {background-position: 0 -56px;}
+#placesList .item .marker_3 {background-position: 0 -102px}
+#placesList .item .marker_4 {background-position: 0 -148px;}
+#placesList .item .marker_5 {background-position: 0 -194px;}
+#placesList .item .marker_6 {background-position: 0 -240px;}
+#placesList .item .marker_7 {background-position: 0 -286px;}
+#placesList .item .marker_8 {background-position: 0 -332px;}
+#placesList .item .marker_9 {background-position: 0 -378px;}
+#placesList .item .marker_10 {background-position: 0 -423px;}
+#placesList .item .marker_11 {background-position: 0 -470px;}
+#placesList .item .marker_12 {background-position: 0 -516px;}
+#placesList .item .marker_13 {background-position: 0 -562px;}
+#placesList .item .marker_14 {background-position: 0 -608px;}
+#placesList .item .marker_15 {background-position: 0 -654px;}
+#pagination {margin:10px auto;text-align: center;}
+#pagination a {display:inline-block;margin-right:10px;}
+#pagination .on {font-weight: bold; cursor: default;color:#777;}

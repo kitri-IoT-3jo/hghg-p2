@@ -6,136 +6,82 @@
     <title>HgHg Sign up</title>
     <%- include('../includes/_head')%>
     <%- include('../includes/board')%>
+    <script type="text/javascript">
+        var idcheck = false;
+        var pwcheck = false;
+        window.onload = function(){
+            document.getElementById('userid').onkeyup = function(){
+                var ids = new Array();
+                <% ids.forEach((id)=>{ -%>
+                ids.push("<%= id%>");
+                <% })-%>
+                var length = <%= ids.length%>;
+                var text = document.getElementById('userid').value;
+                var tl = text.length;
+                var s = document.getElementById('idmsg');
+                s.setAttribute('color', 'red');
+                var msg;
+                if(tl < 8 || tl > 20){
+                    idcheck = false;
+                    msg = '**8~20자의 아이디를 사용하십시오**';    
+                }
+                else{
+                    msg = '**사용 가능한 아이디입니다.**';
+                    idcheck = true;
+                    for(var i=0; i < length; i++)
+                        if(ids[i] == text){
+                            idcheck = false;
+                            msg = '**이미 사용중인 아이디입니다**'; break;
+                        }
+                }
+                document.getElementById('idmsg').innerHTML = msg;
+            }
+            document.getElementById('checkpwd').onkeyup = function(){
+                var pwd = document.getElementById('userpwd').value;
+                var check = document.getElementById('checkpwd').value;
+                var msg;
+                if(pwd != check){
+                    pwcheck = false;
+                    msg = '**비밀번호가 일치하지 않습니다**';
+                }
+                else{
+                    pwcheck = true;
+                    msg = '**비밀번호가 일치합니다**';
+                }
+                document.getElementById('pwdmsg').innerHTML = msg;
+            }
+            document.getElementById('emaildomain').onchange = function(){
+                var self = document.getElementById('emailself');
+                var domain = document.getElementById('emaildomain').value;
+                if(domain == 'self')
+                    self.value = '';
+                else
+                    self.value = domain;
+            }
+        }
+    </script>
     <style type="text/css">
-    div.main {
-        border-radius: 5px;
-        background-color: #ffd191;
-        padding: 50px;
-        margin: auto;
-        width: 450px;
-        margin-top: 100px;
-        overflow: hidden;
-        font-size: 0.9em; 
-    }
-
-    h1 {
-        color: #FACC2E;
-        text-align: center;
-    }
-
-    input[type=text],
-    input[type=password],
-    select {
-        border-radius: 5px;
-        padding: 10px;
-        width: 100%;
-        border: 1px solid #000000;
-        margin: 10px 0;
-        box-sizing: border-box;
-    }
-
-    input[name^=email],
-    select[name^=email] {
-        border-radius: 5px;
-        padding: 10px;
-        width: 30%;
-        border: 1px solid #000000;
-        margin: 10px 0px 10px 0px;
-        box-sizing: border-box;
-        float: left;
-    }
-
-    span.email {
-        width: 5%;
-        height: 15px;
-        margin: 11px 0;
-        padding: 10px 0;
-        text-align: center;
-        line-height: 50%;
-        float: left;
-    }
-
-    input[name^=tel],
-    select[name^=tel] {
-        border-radius: 5px;
-        padding: 10px;
-        width: 20%;
-        border: 1px solid #000000;
-        margin: 10px 0px 10px 0px;
-        box-sizing: border-box;
-        float: left;
-    }
-
-    span.phone {
-        width: 5%;
-        height: 15px;
-        margin: 11px 0;
-        padding: 10px 0;
-        text-align: center;
-        line-height: 50%;
-        float: left;
-    }
-
-    div.gender {
-
-        width: 50%;
-        font-size: 20px;
-        margin-top: 80px;
-    }
-
-    div.introduce {
-        font-weight: bold;
-        width: 30%;
-        margin-top: 10px;
-
-    }
-
-    div.col-lg-6 {
-        float: right;
-        width : 25%; 
-        font-size: 20px;
-        margin-top: 10px;
-    } 
-    input[type=submit] {
-        width: 100%;
-        border: 0;
-        padding: 10px;
-        background-color: #f4a161;
-        margin: 2px 0;
-        font-size: 0.9em;
-    }
-
-    /*inputs for submit and reset*/
-    input[type=submit]:hover {
-        background-color: #f49151;
-        font-weight: bold;
-    }
-
-    input[type=reset] {
-        width: 100%;
-        border: 0;
-        padding: 10px;
-        background-color: #c0c0c0;
-        margin: 2px 0;
-        font-size: 0.9em;
-    }
-
-    input[type=reset]:hover {
-        background-color: #a0a0a0;
-        font-weight: bold;
-    }
+        .msg{ 
+            font-size: 0.8em; 
+            color : #909090;
+        }
+        .email{
+            overflow: hidden;
+        }
     </style>
 </head>
 
 <body>
     <%- include('../navbar/nav_main', {user: user})%>
     <div class="main">
-        <form action="">
-            <label for="userid">아이디</label>
-            <input type="text" name="userid" id="userid" placeholder="아이디">
+        <form name="sf" action="/" method="post" onsubmit="return checkf();">
+            <span><label for="userid">아이디</label></span>
+            <span id="idmsg" class="msg"></span>
+            <input class="form-control" type="text" name="userid" id="userid" placeholder="아이디">
             <label for="userpwd">비밀번호</label>
             <input type="password" name="userpwd" id="userpwd" placeholder="비밀번호"> <br>
-            <label for="checkpwd">비밀번호 확인</label>
+            <span><label for="checkpwd">비밀번호 확인</label></span>
+            <span id="pwdmsg" class="msg"></span>
             <input type="password" name="checkpwd" id="checkpwd" placeholder="비밀번호 확인"><br>
             <label for="nickname">닉네임</label>
             <input type="text" name="nickname" id="nickname" placeholder="사용자 닉네임"> <br>
@@ -151,51 +97,59 @@
                 </select>
                 <span class="email"> </span>
                 <input type="text" name="emailself" id="emailself" placeholder="직접입력">
-                <button type="button" class="btn btn-secondary">인증하기</button>
-            </div><br>
+            </div>
             <hr>
             <label for="username">이름</label>
-            <input type="text" name="username" id="username" placeholder="이름"> <br>
-            <label for="phone">생년월일</label>
-            <div class="phone">
-                <select name="tel1" id="tel1">
-                    <% for(var year = 1900 ; year<=2019;year++) { %>
-                    <option value="test">
-                        <%=year%>
-                    </option>
-                    <%}%>
-                </select>
-                <span class="date">년</span>
-                <select name="tel2" id="tel2">
-                    <% for(var month = 1 ; month<=12;month++) { %>
-                    <option value="test">
-                        <%=month%>
-                    </option>
-                    <%}%>
-                </select>
-                <span class="date">월</span>
-                <select name="tel1" id="tel1">
-                    <% for(var day = 1 ; day<=31;day++) { %>
-                    <option value="test">
-                        <%=day%>
-                    </option>
-                    <%}%>
-                </select>
-                <span class="phone">일</span>
-            </div>
-            <div class="gender">
-                <label for="gender" class="gender"></label>
-                <span class="gender">성별</span>
-                <label> <input type="radio" id="gender" name="gender"> 남</label>
-                <label> <input type="radio" id="gender" name="gender"> 여</label>
-            </div>
-            <div class="col-lg-6">
-                <button type="button" class="btn btn-success">생성하기</button>
-            </div>
-            <input type="submit" name="submit" value="회원가입">
+            <input type="text" name="username" id="username" placeholder="이름">
+            <br><br>
+            <input type="submit" name="submit" id="submit" value="회원가입">
             <input type="reset" name="reset" value="초기화">
         </form>
     </div>
+<script>
+    function checkf(){
+        if(!idcheck){
+            alert("아이디를 확인해주세요");
+            sf.userid.focus();
+            return false;
+        }
+        if(!pwcheck){
+            alert("비밀번호를 확인해주세요");
+            sf.checkpwd.focus();
+            return false;
+        }
+        else if(sf.userid.value == ''){
+            alert("빈 칸이 있습니다");
+            sf.userid.focus();
+            return false;
+        }
+        else if(sf.userpwd.value == ''){
+            alert("빈 칸이 있습니다");
+            sf.userpwd.focus();
+            return false;
+        }
+        else if(sf.nickname.value == ''){
+            alert("빈 칸이 있습니다");
+            sf.nickname.focus();
+            return false;
+        }
+        else if(sf.emailid.value == ''){
+            alert("빈 칸이 있습니다");
+            sf.emailid.focus();
+            return false;
+        }
+        else if(sf.emailself.value == ''){
+            alert("빈 칸이 있습니다");
+            sf.emaildomain.focus();
+            return false;
+        }
+        else if(sf.username.value == ''){
+            alert("빈 칸이 있습니다");
+            sf.username.focus();
+            return false;
+        }
+    }
+</script>
 </body>
 
 </html>

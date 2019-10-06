@@ -13,8 +13,25 @@
     }
     </script>
     <style type="text/css">
-      .clear-fix{
-        height: 100px;
+      .pagebtns {
+          display: inline-block;
+          height: 24px;
+          width: 20px;
+          font-size: 1em;
+      }
+      .nextgroup{
+          display: inline-block;
+          height: 24px;
+          width: 50px;
+          font-size: 1em;
+      }
+      .pagebtns[href='/board/page=<%=cpage%>']{
+          color: white;
+          background-color: #ffc107;
+          border-radius: 5px
+      }
+      .form-inline{
+          float: right;
       }
     </style>
 </head>
@@ -24,7 +41,15 @@
     <%- include('../navbar/nav_main', {user:user})%>
     <div class="clear-fix"></div>
     <div class="container">
-        <h3>전체글보기</h3><br>
+        <h3 style="display: inline; width: 50%;">전체글보기</h3>
+        <form class="form-inline" action="/action_page.php" >
+            <select name="searchType" style="display: inline; width: 80px; margin-right: 10px;">
+                    <option value="subject"> 제목 </option>
+                    <option value="name"> 작성자 </option>
+            </select> 
+            <input type="text" id="searchText" name="searchText" style="display: inline; width: 200px"> 
+            <button type="submit" class="btn btn-light" style="display: inline">검색</button>
+        </form>
         <table class="table table-hover">
             <colgroup>
                 <col width="80px">
@@ -43,34 +68,18 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                for (var i=page_cnt;i<(page*cnt);i++){
-                    if (i>len) {
-                        i++;
-                    } else{ 
-                        let q = query[i];
-                        %>
+                <% query.forEach((q)=>{%>
                 <tr>
-                    <td>
-                        <%= q.board_id%>
-                    </td>
-                    <td>
-                        <a href="/board/<%= q.board_id-%>">
-                            <%= q.subject%></a>
-                    </td>
-                    <td>
-                        <%= q.user_nickname%>
-                    </td>
-                    <td>
-                        <%= q.date%>
-                    </td>
-                    <td>
-                        <%= q.hit%>
-                    </td>
+                    <td><%= q.board_id%></td>
+                    <td><a href="/board/<%= q.board_id-%>"><%= q.subject%></a></td>
+                    <td><%= q.user_nickname%></td>
+                    <td><%= q.date%></td>
+                    <td><%= q.hit%></td>
                 </tr>
-                <% }}%>
+                <% });%>
             </tbody>
         </table>
+<<<<<<< HEAD
         <form method="post" action="/board/search" class="float-left" novalidate>
             <select name="searchType">
                 <option value="subject"> 제목 </option>
@@ -106,9 +115,12 @@
             <li class="page-item"><a class="page-link" href="/board_main/<%=(page_group+1)*10%>">다음</a></li>
         </ul>
 
+=======
+>>>>>>> master
         <div class="text-right">
             <button type="button" class="btn btn-warning" id="write">글쓰기</button>
         </div>
+        <div class="text-center"><%- include('./board_buttons', {pages:pages, cpage:cpage})%></div>
     </div>
 </body>
 
