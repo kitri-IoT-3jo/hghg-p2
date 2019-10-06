@@ -4,11 +4,11 @@ const session = require('express-session');
 const app = express();
 const mysql = require('mysql');
 const conn = mysql.createConnection({
-	host 	: '127.0.0.1',
+	host 	: '183.101.196.145',
 	port 	: 3306,
-	user 	: 'hghgtmp',
+	user 	: 'hghg',
 	password: 'hghg',
-	database: 'hghgtmp'
+	database: 'hghgp'
 });
 
 app.set('views', 'views');
@@ -77,6 +77,7 @@ app.post('/login', (req, res)=>{
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
+		console.log(results);
 		let pw = req.body.userpw;
 		if(pw == results[0].user_pw){
 			let sess = req.session;
