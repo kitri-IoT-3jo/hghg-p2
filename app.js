@@ -77,6 +77,7 @@ app.post('/login', (req, res)=>{
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
+		console.log(results);
 		let pw = req.body.userpw;
 		if(pw == results[0].user_pw){
 			let sess = req.session;
