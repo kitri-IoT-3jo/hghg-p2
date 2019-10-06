@@ -158,7 +158,9 @@
     function getListRestaurant(index, places) {
         var card = document.createElement('div');
         var itemStr = '<div class="card h-100" id="card' + index + '">'
-                        + '<iframe src="' + places.place_url +'" style="border:none; overflow-x: hidden;"></iframe>'
+                        + '<div class="frameWrap">'
+                        + '<iframe id="frame" src="' + places.place_url +'" style="overflow-x: hidden; overflow-y: hidden;" "fncOnload()">'
+                        + '</iframe></div>'
                         + '<div class="card-body">'
                         + '<h4 class="card-title">'
                             + places.place_name 
