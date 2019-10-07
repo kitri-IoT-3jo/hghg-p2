@@ -77,9 +77,8 @@ app.post('/login', (req, res)=>{
 			console.log(err);
 			res.status(500).send('Internal Server Error');
 		}
-		console.log(results);
 		let pw = req.body.userpw;
-		if(pw == results[0].user_pw){
+		if(results[0] != undefined && pw == results[0].user_pw){
 			let sess = req.session;
 			sess.uid = uid;
 			sess.nick = results[0].user_nickname;
@@ -289,14 +288,25 @@ app.get('/board/:num/delete', (req, res) => {
 		delete from board
 		where board_id = ?
 	`;
+	let com_del = `
+		delete from comments
+		where board_id = ?
+	`;
 
-	conn.query(board_del, [num], (err, results, fields) => {
+	conn.query(com_del, [num], (err, results, fields) => {
 		if(err)
 		{
 			console.log(err);
 			res.status(500).send('Internal Server Error!');
 		}
-		res.redirect('/board');
+		conn.query(board_del, [num], (err, results, fields) => {
+			if(err)
+			{
+				console.log(err);
+				res.status(500).send('Internal Server Error!');
+			}
+			res.redirect('/board');
+		});
 	});
 });
 
