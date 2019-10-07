@@ -10,11 +10,42 @@
         document.getElementById('write').onclick = function() {
             location.href = '/board/write';
         }
+        document.getElementById('to_board_main').onclick = function() {
+            location.href = '/board';
+        }
+    }
+    function next_page(num){
+        var type = '<%=search[0]%>';
+        var search = '<%=search[1]%>';
+        if(search == undefined || search == '')
+            location.href = '/board?page='+num;
+        else
+            location.href = '/board?page='+num+'&searchType=<%=search[0]%>&searchText=<%=search[1]%>';
     }
     </script>
     <style type="text/css">
-      .clear-fix{
-        height: 100px;
+      .pagebtns {
+          display: inline-block;
+          height: 24px;
+          width: 20px;
+          font-size: 1em;
+      }
+      .nextgroup{
+          display: inline-block;
+          height: 24px;
+          width: 50px;
+          font-size: 1em;
+      }
+      .pagebtns[href='javascript:next_page(<%=cpage%>);']{
+          color: white;
+          background-color: #ffc107;
+          border-radius: 5px
+      }
+      .form-inline{
+          float: right;
+      }
+      #to_board_main:hover{
+          cursor:pointer;
       }
     </style>
 </head>
@@ -24,7 +55,15 @@
     <%- include('../navbar/nav_main', {user:user})%>
     <div class="clear-fix"></div>
     <div class="container">
-        <h3>전체글보기</h3><br>
+        <h3 style="display: inline; width: 50%;" id="to_board_main">전체글보기</h3>
+        <form class="form-inline" action="/board" method="get">
+            <select name="searchType" style="display: inline; width: 115px; margin-right: 10px;">
+                    <option value="sub_con"> 제목+내용 </option>
+                    <option value="name"> 작성자 </option>
+            </select> 
+            <input type="text" id="searchText" name="searchText" style="display: inline; width: 200px"> 
+            <button type="submit" class="btn btn-light" style="display: inline">검색</button>
+        </form>
         <table class="table table-hover">
             <colgroup>
                 <col width="80px">
@@ -43,71 +82,21 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                for (var i=page_cnt;i<(page*cnt);i++){
-                    if (i>len) {
-                        i++;
-                    } else{ 
-                        let q = query[i];
-                        %>
+                <% query.forEach((q)=>{%>
                 <tr>
-                    <td>
-                        <%= q.board_id%>
-                    </td>
-                    <td>
-                        <a href="/board/<%= q.board_id-%>">
-                            <%= q.subject%></a>
-                    </td>
-                    <td>
-                        <%= q.user_nickname%>
-                    </td>
-                    <td>
-                        <%= q.date%>
-                    </td>
-                    <td>
-                        <%= q.hit%>
-                    </td>
+                    <td><%= q.board_id%></td>
+                    <td><a href="/board/<%= q.board_id-%>"><%= q.subject%></a></td>
+                    <td><%= q.nickname%></td>
+                    <td><%= q.date%></td>
+                    <td><%= q.hit%></td>
                 </tr>
-                <% }}%>
+                <% });%>
             </tbody>
         </table>
-        <form method="get" action="" enctype="multipart/form-data" class="float-left" novalidate>
-            <select name="searchType">
-                <option value="subject"> 제목 </option>
-                <option value="name"> 작성자 </option>
-            </select> 
-            <input type="text" id="searchText" name="searchText"> <button type="submit" class="btn">검색</button>
-        </form>
-        <ul class="pagination justify-content-center" style="margin:20px 0">
-            <%
-                if (page < 11) { %>
-
-                    <li class="page-item disabled"><a class="page-link" href="">이전</a></li>
-            <%
-                } else {
-                    %>
-                    <li class="page-item"><a class="page-link" href="/board_main/<%= (page_group*10)-10%>">이전</a></li>
-              <%
-                }
-            %>
-            <%
-                for (var k = 1; k <((len/cnt)/5)+1; k++) {
-                for(var j=0;j < len/cnt;j++){
-                    if (j > cnt*k) {
-                        j++;
-                    } else {
-            %>
-            <li class="page-item"><a class="page-link" href="/board_main/<%=j+1%>"><%=j+1%></a></li>
-            <%
-                    }
-                }
-            }
-            %>
-            <li class="page-item"><a class="page-link" href="/board_main/<%=(page_group+1)*10%>">다음</a></li>
-        </ul>
         <div class="text-right">
             <button type="button" class="btn btn-warning" id="write">글쓰기</button>
         </div>
+        <div class="text-center"><%- include('./board_buttons', {pages:pages, cpage:cpage})%></div>
     </div>
 </body>
 

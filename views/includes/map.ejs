@@ -68,6 +68,7 @@
         
         // 검색 결과 목록에 추가된 항목들을 제거합니다
         removeAllChildNods(listEl);
+        removeAllChildNods(restaurant);
     
         // 지도에 표시되고 있는 마커를 제거합니다
         removeMarker();
@@ -78,6 +79,7 @@
             var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
                 marker = addMarker(placePosition, i), 
                 itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+                itemCard = getListRestaurant(i, places[i]);
     
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
@@ -109,11 +111,16 @@
                 };
     
                 itemEl.onclick =  function () {
-                    alert('눌렀습니다!');
+                    //alert('눌렀습니다!');
+                };
+
+                itemCard.onclick = function() {
+                    location.href = place.place_url;
                 };
             })(marker, places[i]);
     
             fragment.appendChild(itemEl);
+            restaurant.appendChild(itemCard); 
         }
     
         // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
@@ -129,7 +136,7 @@
     
         var el = document.createElement('li'),
         itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-                    '<div class="info">' +
+                    '<a href="#card' + index + '"><div class="info">' +
                     '   <h5>' + places.place_name + '</h5>';
     
         if (places.road_address_name) {
@@ -140,7 +147,7 @@
         }
                         
             itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                    '</div>';           
+                    '</div></a>';           
     
         el.innerHTML = itemStr;
         el.className = 'item';
@@ -148,6 +155,31 @@
         //여기에 카드 조정해서 링크랑 여러가지 만들기!!!
     
         return el;
+    }
+
+    function getListRestaurant(index, places) {
+        var card = document.createElement('div');
+        var itemStr = '<div class="card h-100" id="card' + index + '">'
+                        + '<div class="frameWrap">'
+                        + '<iframe id="frame" src="' + places.place_url +'" style="overflow-x: hidden; overflow-y: hidden;" "fncOnload()">'
+                        + '</iframe></div>'
+                        + '<div class="card-body">'
+                        + '<h4 class="card-title">'
+                            + places.place_name 
+                        + '</h4>'
+                        + '<p class="card-text">'
+                            + places.category_name
+                        + '</p>'
+                        + '</div>'
+                        + '<div class="card-footer">'
+                        + '<a href="/board/write" class="btn btn-primary">함께 하기!</a>'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>' ;
+        
+        card.innerHTML = itemStr;
+        card.className = 'col-lg-3 col-md-6 mb-4'
+        return card;
     }
     
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
