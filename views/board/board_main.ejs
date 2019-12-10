@@ -93,7 +93,6 @@
                 <% });%>
             </tbody>
         </table>
-<<<<<<< HEAD
         <form method="post" action="/board/search" class="float-left" novalidate>
             <select name="searchType">
                 <option value="subject"> 제목 </option>
@@ -101,6 +100,8 @@
             </select> 
             <input type="text" id="searchText" name="searchText"> <button type="submit" class="btn">검색</button>
         </form>
+
+
         <ul class="pagination justify-content-center" style="margin:20px 0">
             <%
                 if (page < 11) { %>
@@ -128,9 +129,6 @@
             %>
             <li class="page-item"><a class="page-link" href="/board_main/<%=(page_group+1)*10%>">다음</a></li>
         </ul>
-
-=======
->>>>>>> master
         <div class="text-right">
             <button type="button" class="btn btn-warning" id="write">글쓰기</button>
         </div>
